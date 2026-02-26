@@ -94,47 +94,66 @@
    fast:100ms · base:180ms · slow:380ms · spring: cubic-bezier(.4,0,.2,1)
 ──────────────────────────────────────────────────────── */
 :root {
+  /* ═══════════════════════════════════════
+     Z3 DESIGN SYSTEM  v5  ·  Phase 1–3 upgrade
+     Colors: Jet · Mint · Mauve · Blush · Warm-Gray
+     ═══════════════════════════════════════ */
+
   /* ── Brand palette ── */
-  --gold:       #B8955A;   /* Primary brand accent */
-  --gold-lt:    #D4B88A;   /* Light gold for tints */
-  --gold-bg:    #F8F2E8;   /* Gold wash surfaces */
-  --gold-bd:    #C8A070;   /* Gold borders */
-  --navy:       #243B55;   /* Rent/secondary action */
-  --navy-lt:    #3A5475;   /* Navy hover */
-  --navy-bg:    #EEF1F6;   /* Navy wash */
-  --ivory:      #FAFAF8;   /* Primary bg */
-  --ivory-2:    #F3F0EB;   /* Secondary bg */
-  --ivory-3:    #FFFFFF;   /* Card/modal bg */
-  --charcoal:   #1A1916;   /* Primary ink */
+  --mint:       #A5FFD6;   /* Primary accent fill */
+  --mint-lt:    #C8FFE8;   /* Light mint tints */
+  --mint-bg:    #EAFFF6;   /* Mint wash surfaces */
+  --mint-bd:    #70E6B0;   /* Mint borders */
+  --mauve:      #A96DA3;   /* Secondary accent / text accent */
+  --mauve-lt:   #C08CBB;   /* Mauve hover */
+  --mauve-bg:   #F5EEF5;   /* Mauve wash */
+  --blush:      #EEE5E9;   /* Primary bg */
+  --blush-2:    #E6DDE3;   /* Secondary bg */
+  --blush-3:    #FAF7F8;   /* Card / modal bg */
+  --jet:        #12130F;   /* Primary ink */
+  --warm-gray:  #817F75;   /* Warm secondary text */
   --white:      #FFFFFF;
 
+  /* ── Backward-compat aliases ── */
+  --gold:       #A5FFD6;   /* → mint */
+  --gold-lt:    #C8FFE8;
+  --gold-bg:    #EAFFF6;
+  --gold-bd:    #70E6B0;
+  --navy:       #A96DA3;   /* → mauve */
+  --navy-lt:    #C08CBB;
+  --navy-bg:    #F5EEF5;
+  --ivory:      #EEE5E9;   /* → blush */
+  --ivory-2:    #E6DDE3;
+  --ivory-3:    #FAF7F8;
+  --charcoal:   #12130F;   /* → jet */
+
   /* ── Surface aliases ── */
-  --bg:         var(--ivory);
-  --bg-2:       var(--ivory-2);
-  --bg-3:       var(--ivory-3);
-  --surface:    rgba(255,255,255,.72);
+  --bg:         var(--blush);
+  --bg-2:       var(--blush-2);
+  --bg-3:       var(--blush-3);
+  --surface:    rgba(238,229,233,.72);
 
   /* ── Text hierarchy ── */
-  --ink:        #1A1916;
-  --ink-900:    #1A1916;
-  --ink-2:      rgba(26,25,22,.60);
-  --ink-3:      rgba(26,25,22,.38);
-  --ink-4:      rgba(26,25,22,.22);
+  --ink:        #12130F;
+  --ink-900:    #12130F;
+  --ink-2:      rgba(18,19,15,.62);
+  --ink-3:      rgba(18,19,15,.40);
+  --ink-4:      rgba(18,19,15,.24);
 
   /* ── Rules ── */
-  --rule:       rgba(26,25,22,.09);
-  --rule-med:   rgba(26,25,22,.16);
+  --rule:       rgba(18,19,15,.10);
+  --rule-med:   rgba(18,19,15,.18);
 
   /* ── Accent aliases ── */
-  --accent:     var(--gold);
-  --accent-dk:  #8C6E3E;
-  --accent-2:   var(--navy);
-  --accent-2dk: #1A2C40;
+  --accent:     var(--mint);
+  --accent-dk:  var(--mauve);    /* readable text-accent on light bg */
+  --accent-2:   var(--mauve);
+  --accent-2dk: #7A4078;
 
   /* ── Semantic: data only ── */
-  --up:         #3D7A52;   /* positive (muted emerald) */
-  --up-bg:      #EDF5F0;   /* positive bg */
-  --down:       #8C3A3A;   /* negative (ruby) */
+  --up:         #2A8A52;
+  --up-bg:      #E6F5EE;
+  --down:       #8C3A3A;
 
   /* ── Typography ── */
   --f-display: 'Gambarino', serif;
@@ -154,7 +173,8 @@
   --t-2xs:      10px;
   --t-cap:      10px;
 
-  /* ── Spacing (8pt grid) ── */
+  /* ── Spacing (8pt grid · base unit: 16px) ── */
+  --spacing-unit: 16px;
   --pad:        2rem;
   --pad-sm:     1rem;
   --pad-xs:     0.5rem;
@@ -176,34 +196,34 @@
   --pill: 999px;
 
   /* ── Shadows ── */
-  --sh-sm:      0 1px 3px rgba(26,25,22,.06), 0 1px 2px rgba(26,25,22,.04);
-  --sh-md:      0 4px 16px rgba(26,25,22,.08), 0 1px 4px rgba(26,25,22,.04);
-  --sh-lg:      0 12px 40px rgba(26,25,22,.10), 0 4px 12px rgba(26,25,22,.05);
-  --sh-overlay: 0 24px 64px rgba(26,25,22,.14), 0 8px 24px rgba(26,25,22,.06);
+  --sh-sm:      0 1px 3px rgba(18,19,15,.06), 0 1px 2px rgba(18,19,15,.04);
+  --sh-md:      0 4px 16px rgba(18,19,15,.08), 0 1px 4px rgba(18,19,15,.04);
+  --sh-lg:      0 12px 40px rgba(18,19,15,.10), 0 4px 12px rgba(18,19,15,.05);
+  --sh-overlay: 0 24px 64px rgba(18,19,15,.14), 0 8px 24px rgba(18,19,15,.06);
 
   /* ── Motion ── */
-  --t-fast: 100ms;   /* micro-interactions */
-  --t-slow: 380ms;   /* page-level transitions */
+  --t-fast: 100ms;
+  --t-slow: 380ms;
   --ease: cubic-bezier(.4,0,.2,1);
 }
 
 /* ── Dark mode token override ── */
 [data-theme="dark"] {
-  --bg:        #121210;
-  --bg-2:      #1C1B18;
-  --bg-3:      #242320;
-  --surface:   rgba(26,25,22,.72);
-  --ink:       rgba(250,250,248,.92);
-  --ink-2:     rgba(250,250,248,.58);
-  --ink-3:     rgba(250,250,248,.36);
-  --ink-4:     rgba(250,250,248,.20);
-  --rule:      rgba(250,250,248,.09);
-  --rule-med:  rgba(250,250,248,.16);
-  --accent:    var(--gold);
-  --accent-dk: var(--gold-lt);
-  --accent-2:  var(--navy-lt);
-  --accent-2dk:var(--navy-lt);
-  --up-bg:     rgba(61,122,82,.15);
+  --bg:        #0E0F0C;
+  --bg-2:      #161714;
+  --bg-3:      #1E201C;
+  --surface:   rgba(18,19,15,.72);
+  --ink:       rgba(238,229,233,.92);
+  --ink-2:     rgba(238,229,233,.58);
+  --ink-3:     rgba(238,229,233,.36);
+  --ink-4:     rgba(238,229,233,.20);
+  --rule:      rgba(238,229,233,.09);
+  --rule-med:  rgba(238,229,233,.16);
+  --accent:    var(--mint);
+  --accent-dk: var(--mint-lt);   /* light mint for text on dark */
+  --accent-2:  var(--mauve-lt);
+  --accent-2dk:var(--mauve-lt);
+  --up-bg:     rgba(42,138,82,.15);
 }
 
 /* ── Reset ── */
@@ -233,24 +253,24 @@ svg    { display: block; flex-shrink: 0; }
 ══════════════════════════════════════════ */
 .accent-bar {
   height: 2px;
-  background: linear-gradient(90deg, #1A1916 0%, #8C6E3E 55%, #B8955A 100%);
+  background: linear-gradient(90deg, #12130F 0%, #A96DA3 55%, #A5FFD6 100%);
   flex-shrink: 0;
 }
-[data-theme="dark"] .accent-bar { background: linear-gradient(90deg, #242320 0%, #8C6E3E 55%, #B8955A 100%); }
+[data-theme="dark"] .accent-bar { background: linear-gradient(90deg, #0E0F0C 0%, #A96DA3 55%, #A5FFD6 100%); }
 
 /* ══════════════════════════════════════════
    LIQUID GLASS — Apple-inspired surfaces
 ══════════════════════════════════════════ */
 .glass {
-  background: rgba(250,250,248,.12);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(238,229,233,.14);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.22);
   box-shadow: var(--sh-md);
 }
 [data-theme="dark"] .glass {
-  background: rgba(26,25,22,.48);
-  border-color: rgba(255,255,255,.10);
+  background: rgba(18,19,15,.52);
+  border-color: rgba(165,255,214,.12);
   box-shadow: var(--sh-md);
 }
 
@@ -261,7 +281,7 @@ svg    { display: block; flex-shrink: 0; }
 ══════════════════════════════════════════ */
 .hd {
   height: var(--hd-h);
-  background: rgba(250,250,248,.94);
+  background: rgba(238,229,233,.94);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--rule);
@@ -274,8 +294,8 @@ svg    { display: block; flex-shrink: 0; }
   z-index: 200;
 }
 [data-theme="dark"] .hd {
-  background: rgba(18,19,15,.92);
-  border-bottom-color: rgba(255,255,255,.08);
+  background: rgba(14,15,12,.94);
+  border-bottom-color: rgba(165,255,214,.08);
 }
 
 /* Logo — Gambarino display */
@@ -430,7 +450,7 @@ svg    { display: block; flex-shrink: 0; }
   transition: color .14s;
 }
 .sb-tab:hover { color: var(--ink-2); }
-.sb-tab.on { color: var(--ink); border-bottom-color: var(--ink); }
+.sb-tab.on { color: var(--ink); border-bottom-color: var(--mint); }
 
 .sb-body { flex: 1; overflow-y: auto; padding: var(--s6) var(--pad-sm); }
 .sb-body.hide { display: none; }
@@ -460,7 +480,7 @@ svg    { display: block; flex-shrink: 0; }
   font-size: 30px;
   font-weight: 300;
   letter-spacing: -0.02em;
-  color: var(--gold);
+  color: var(--mauve);
   line-height: 1;
   margin-bottom: 2px;
 }
@@ -507,7 +527,7 @@ svg    { display: block; flex-shrink: 0; }
   padding: 2px 8px; border-radius: var(--pill); border: 1px solid var(--rule-med); color: var(--ink-3);
 }
 .np.q { color: var(--up); border-color: var(--up); background: var(--up-bg); }
-.np.m { color: #8A6010; border-color: #D4A050; background: #FDF4E0; }
+.np.m { color: #5E5A54; border-color: var(--warm-gray); background: #F0EDEA; }
 .np.l { color: var(--down); border-color: var(--down); background: #F5EAEA; }
 
 .noise-rows { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s3); }
@@ -516,7 +536,7 @@ svg    { display: block; flex-shrink: 0; }
 .nr-t { flex: 1; height: 2px; background: var(--rule); border-radius: 1px; }
 .nr-f { height: 2px; border-radius: 1px; }
 .nr-f.q { background: var(--up); }
-.nr-f.m { background: #C08040; }
+.nr-f.m { background: var(--warm-gray); }
 .nr-f.l { background: var(--down); }
 .nr-db { font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); min-width: 26px; text-align: right; }
 
@@ -567,7 +587,7 @@ svg    { display: block; flex-shrink: 0; }
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(10,9,7,.70);
+  background: rgba(8,9,6,.72);
   z-index: 0;
   pointer-events: none;
 }
@@ -740,7 +760,7 @@ svg    { display: block; flex-shrink: 0; }
   transition: color .14s;
 }
 .mkt-tab:hover { color: var(--ink-2); }
-.mkt-tab.on { color: var(--gold); border-bottom-color: var(--gold); }
+.mkt-tab.on { color: var(--mauve); border-bottom-color: var(--mint); }
 .mkt-body {
   padding: var(--s6) var(--pad);
   display: grid;
@@ -850,14 +870,14 @@ svg    { display: block; flex-shrink: 0; }
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--mauve);
   padding: var(--s1) var(--s3);
-  border: 1px solid var(--gold);
+  border: 1px solid var(--mauve);
   background: transparent;
   cursor: pointer; transition: all .14s;
   border-radius: var(--r);
 }
-.qr:hover { background: var(--gold); color: var(--charcoal); border-color: var(--gold); }
+.qr:hover { background: var(--mint); color: var(--jet); border-color: var(--mint); }
 
 .ai-input-area {
   padding: var(--s4) var(--s5);
@@ -917,8 +937,8 @@ svg    { display: block; flex-shrink: 0; }
   z-index: 10;
 }
 [data-theme="dark"] .insights {
-  background: rgba(15,14,13,.82);
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(14,15,12,.88);
+  border-bottom: 1px solid rgba(165,255,214,.08);
 }
 .ins-i {
   flex: 1; padding: var(--s3) var(--s4);
@@ -959,8 +979,8 @@ svg    { display: block; flex-shrink: 0; }
 }
 .map-btn:hover { background: var(--bg-2); color: var(--ink); }
 .map-btn.active { background: var(--gold); border-color: var(--gold); color: var(--white); }
-[data-theme="dark"] .map-btn { background: rgba(30,28,24,.9); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
-[data-theme="dark"] .map-btn:hover { background: rgba(50,48,44,.9); }
+[data-theme="dark"] .map-btn { background: rgba(22,23,20,.92); border-color: rgba(165,255,214,.12); color: rgba(238,229,233,.7); }
+[data-theme="dark"] .map-btn:hover { background: rgba(32,34,30,.95); }
 [data-theme="dark"] .map-btn.active { background: var(--gold); border-color: var(--gold); color: var(--bg); }
 
 /* ══ DATA PANEL — right side in map view ══ */
@@ -995,7 +1015,7 @@ svg    { display: block; flex-shrink: 0; }
   transition: color .14s;
 }
 .dp-tab:hover { color: var(--ink-2); }
-.dp-tab.on { color: var(--gold); border-bottom-color: var(--gold); }
+.dp-tab.on { color: var(--mauve); border-bottom-color: var(--mint); }
 .dp-body { flex: 1; overflow-y: auto; padding: var(--s5) var(--s4); }
 .dp-body.hide { display: none; }
 
@@ -1356,7 +1376,7 @@ svg    { display: block; flex-shrink: 0; }
 }
 .mgmt-input:focus, .mgmt-select:focus, .mgmt-textarea:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(184,149,90,.18);
+  box-shadow: 0 0 0 3px rgba(165,255,214,.28);
 }
 .mgmt-textarea { resize: vertical; min-height: 80px; }
 .mgmt-type-toggle { display: flex; gap: var(--s2); }
@@ -1538,7 +1558,7 @@ svg    { display: block; flex-shrink: 0; }
         <div class="spark">
           <svg viewBox="0 0 180 48" fill="none">
             <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A87E28" stop-opacity=".15"/><stop offset="100%" stop-color="#A87E28" stop-opacity="0"/></linearGradient></defs>
-            <path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#243B55" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/>
+            <path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#A96DA3" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/>
             <path d="M0 44 C30 42 60 36 90 30 S150 14 180 6 L180 48 L0 48Z" fill="url(#g2)"/>
             <circle cx="180" cy="6" r="2.5" fill="#243B55"/>
           </svg>
@@ -1674,7 +1694,7 @@ svg    { display: block; flex-shrink: 0; }
             <div class="trend-val gold">↑ 14.1%</div>
             <div class="trend-cmp">vs 6mo ago</div>
             <div class="spark">
-              <svg viewBox="0 0 180 48" fill="none"><path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#243B55" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="6" r="2.5" fill="#243B55"/></svg>
+              <svg viewBox="0 0 180 48" fill="none"><path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#A96DA3" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="6" r="2.5" fill="#243B55"/></svg>
             </div>
             <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
             <div class="data-row"><span class="k">Avg. rent/sqft</span><span class="v">AED 97/yr</span></div>
@@ -1849,7 +1869,7 @@ svg    { display: block; flex-shrink: 0; }
             <div class="sub-lbl">AED / sqft/yr · 6 mo</div>
             <div class="trend-val" style="color:var(--navy)">↑ 14.1%</div>
             <div class="trend-cmp">vs 6mo ago</div>
-            <div class="spark"><svg viewBox="0 0 180 48" fill="none"><path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#243B55" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="6" r="2.5" fill="#243B55"/></svg></div>
+            <div class="spark"><svg viewBox="0 0 180 48" fill="none"><path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#A96DA3" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="6" r="2.5" fill="#243B55"/></svg></div>
             <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
             <div class="data-row"><span class="k">Avg. rent/sqft</span><span class="v">AED 97/yr</span></div>
             <div class="data-row"><span class="k">YoY</span><span class="v" style="color:var(--navy)">+12.5%</span></div>
@@ -2130,7 +2150,7 @@ function addNoiseLayers() {
         'fill-color': [
           'interpolate', ['linear'], ['get', 'db'],
           32, '#2E6B47',
-          55, '#C4A040',
+          55, '#817F75',
           72, '#8C3A3A',
         ],
         'fill-opacity': 0.28,

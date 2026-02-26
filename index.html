@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Z3 — Dubai's most intelligent real estate platform. AI-powered search, live market signals, and Mapbox-driven property discovery.">
+<meta property="og:title" content="Z3 — The Smartest Real Estate. Ever.">
+<meta property="og:description" content="AI-powered real estate search for Dubai. Find properties by lifestyle, budget, or neighbourhood noise level.">
+<meta property="og:type" content="website">
 <title>Z3 — The Smartest Real Estate. Ever.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1703,7 +1707,6 @@ svg    { display: block; flex-shrink: 0; }
           </div>
         </div>
       </div>
-      </div><!-- /hero-data -->
     </div><!-- /hero -->
 
     <!-- MAP VIEW -->
@@ -1924,11 +1927,9 @@ svg    { display: block; flex-shrink: 0; }
       </div>
 
     </div><!-- /mapview -->
-  </main>
-</div><!-- /app -->
 
-<!-- PROPERTY MANAGEMENT VIEW -->
-<div id="mgmtView">
+    <!-- PROPERTY MANAGEMENT VIEW -->
+    <div id="mgmtView">
   <div class="mgmt-wrap">
     <div class="mgmt-hed">List a Property</div>
     <p class="mgmt-sub">Add your property to Z3's marketplace — buyers and renters find it instantly.</p>
@@ -2032,7 +2033,10 @@ svg    { display: block; flex-shrink: 0; }
       <button class="btn-submit" onclick="submitListing()">Publish Listing</button>
     </div>
   </div>
-</div>
+</div><!-- /mgmtView -->
+  </main>
+</div><!-- /app -->
+
 
 <!-- SIGN IN MODAL -->
 <div class="modal-bg" id="modalBg" onclick="closeModalClick(event)">

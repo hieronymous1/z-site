@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Z3 — The Smartest Real Estate. Ever.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=gambarino@400&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<style>
+
+/* ═══════════════════════════════════════════════════
+   Z3 DESIGN SYSTEM  ·  Dubai Real Estate  ·  v4
+   ═══════════════════════════════════════════════════
+
+   BRAND STORY
+   Authority of a private bank. Precision of a data terminal.
+   Warmth of a luxury concierge.
+
+   COLORS
+   Primary    Gold    #B8955A  — CTA, active states, buy listings
+   Secondary  Navy    #243B55  — rent listings, secondary actions
+   Surface    Ivory   #FAFAF8  — primary background
+   Ink        Charcoal #1A1916 — primary text
+   Positive   Emerald #3D7A52  — price up, good signals (semantic only)
+   Negative   Ruby    #8C3A3A  — price down, bad signals (semantic only)
+
+   TYPOGRAPHY
+   Display    Gambarino        — hero headlines, editorial moments
+   UI         Epilogue         — all interface text
+   Data       JetBrains Mono   — prices, statistics, raw data
+
+   Scale (modular 1.25×)
+   10 · 11 · 12 · 14 · 16 · 20 · 24 · 32 · clamp display
+
+   SPACING  (8pt grid)
+   s1:4  s2:8  s3:12  s4:16  s5:20  s6:24  s8:32  s10:40  s12:48  s16:64
+
+   RADIUS
+   xs:2px  base:4px  md:8px  lg:12px  pill:999px
+   Only use pill for explicit pill-shape chips/badges.
+   All interactive cards, panels, modals → md (8px) or lg (12px).
+
+   ELEVATION
+   sm  — inline elements, subtle borders
+   md  — cards, dropdowns
+   lg  — panels, popovers
+   overlay — modals, full-page overlays
+
+   MOTION
+   Fast  100ms  — micro-interactions (hover, focus)
+   Base  180ms  — panel transitions, tab changes
+   Slow  380ms  — page-level transitions, slides
+   Easing: cubic-bezier(.4,0,.2,1)  (material standard ease)
+
+   RULES
+   · Every interactive element has a hover AND focus state
+   · Color alone never conveys meaning — always pair with label or icon
+   · Minimum contrast 4.5:1 for body text, 3:1 for large text (WCAG AA)
+   · Never use mint or mauve — retired in v4
+   · Data colors (emerald/ruby) are semantic-only — not decorative
+   ═══════════════════════════════════════════════════ */
+
+/* ── DESIGN SYSTEM ───────────────────────────────────────
+   Z3 Real Estate · Dubai · v4
+
+   COLORS
+   · Brand: Gold (#B8955A) — primary action, CTA, accent
+   · Surface: Ivory (#FAFAF8) → White (#FFFFFF)
+   · Ink: Charcoal (#1A1916) → 60%/38%/22% opacity hierarchy
+   · Semantic: Emerald (up), Ruby (down) — data only
+   · Secondary: Navy (#243B55) — rent listings, secondary action
+
+   SPACING — 8pt grid
+   4 / 8 / 12 / 16 / 20 / 24 / 32 / 40 / 48 / 64
+
+   TYPOGRAPHY — modular scale (1.25×)
+   2xs:10 · xs:11 · sm:12 · base:14 · md:16 · lg:20 · xl:24 · 2xl:32 · display:clamp
+
+   RADIUS
+   none:0 · xs:2px · sm:4px · md:8px · lg:16px · pill:999px
+
+   SHADOWS
+   sm / md / lg / overlay
+
+   MOTION
+   fast:100ms · base:180ms · slow:380ms · spring: cubic-bezier(.4,0,.2,1)
+──────────────────────────────────────────────────────── */
+:root {
+  /* ── Brand palette ── */
+  --gold:       #B8955A;   /* Primary brand accent */
+  --gold-lt:    #D4B88A;   /* Light gold for tints */
+  --gold-bg:    #F8F2E8;   /* Gold wash surfaces */
+  --gold-bd:    #C8A070;   /* Gold borders */
+  --navy:       #243B55;   /* Rent/secondary action */
+  --navy-lt:    #3A5475;   /* Navy hover */
+  --navy-bg:    #EEF1F6;   /* Navy wash */
+  --ivory:      #FAFAF8;   /* Primary bg */
+  --ivory-2:    #F3F0EB;   /* Secondary bg */
+  --ivory-3:    #FFFFFF;   /* Card/modal bg */
+  --charcoal:   #1A1916;   /* Primary ink */
+  --white:      #FFFFFF;
+
+  /* ── Surface aliases ── */
+  --bg:         var(--ivory);
+  --bg-2:       var(--ivory-2);
+  --bg-3:       var(--ivory-3);
+  --surface:    rgba(255,255,255,.72);
+
+  /* ── Text hierarchy ── */
+  --ink:        #1A1916;
+  --ink-900:    #1A1916;
+  --ink-2:      rgba(26,25,22,.60);
+  --ink-3:      rgba(26,25,22,.38);
+  --ink-4:      rgba(26,25,22,.22);
+
+  /* ── Rules ── */
+  --rule:       rgba(26,25,22,.09);
+  --rule-med:   rgba(26,25,22,.16);
+
+  /* ── Accent aliases ── */
+  --accent:     var(--gold);
+  --accent-dk:  #8C6E3E;
+  --accent-2:   var(--navy);
+  --accent-2dk: #1A2C40;
+
+  /* ── Semantic: data only ── */
+  --up:         #3D7A52;   /* positive (muted emerald) */
+  --up-bg:      #EDF5F0;   /* positive bg */
+  --down:       #8C3A3A;   /* negative (ruby) */
+
+  /* ── Typography ── */
+  --f-display: 'Gambarino', serif;
+  --f-sans:    'Epilogue', sans-serif;
+  --f-mono:    'JetBrains Mono', monospace;
+  --f-serif:   'Gambarino', serif;
+  --f-cond:    'Epilogue', sans-serif;
+
+  /* ── Scale (modular 1.25×) ── */
+  --hero-size:  clamp(52px, 7vw, 96px);
+  --t-disp:     clamp(24px, 3vw, 40px);
+  --t-lg:       20px;
+  --t-md:       16px;
+  --t-base:     14px;
+  --t-sm:       12px;
+  --t-xs:       11px;
+  --t-2xs:      10px;
+  --t-cap:      10px;
+
+  /* ── Spacing (8pt grid) ── */
+  --pad:        2rem;
+  --pad-sm:     1rem;
+  --pad-xs:     0.5rem;
+  --s1: 4px;  --s2: 8px;  --s3: 12px;  --s4: 16px;
+  --s5: 20px; --s6: 24px; --s8: 32px;  --s10: 40px;
+  --s12: 48px; --s16: 64px;
+
+  /* ── Layout ── */
+  --hd-h:      68px;
+  --sb-w:      220px;
+  --panel-w:   280px;
+  --ai-w:      320px;
+
+  /* ── Radius ── */
+  --r-xs: 2px;
+  --r:    4px;
+  --r2:   8px;
+  --r3:   12px;
+  --pill: 999px;
+
+  /* ── Shadows ── */
+  --sh-sm:      0 1px 3px rgba(26,25,22,.06), 0 1px 2px rgba(26,25,22,.04);
+  --sh-md:      0 4px 16px rgba(26,25,22,.08), 0 1px 4px rgba(26,25,22,.04);
+  --sh-lg:      0 12px 40px rgba(26,25,22,.10), 0 4px 12px rgba(26,25,22,.05);
+  --sh-overlay: 0 24px 64px rgba(26,25,22,.14), 0 8px 24px rgba(26,25,22,.06);
+
+  /* ── Motion ── */
+  --t-fast: 100ms;   /* micro-interactions */
+  --t-slow: 380ms;   /* page-level transitions */
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Dark mode token override ── */
+[data-theme="dark"] {
+  --bg:        #121210;
+  --bg-2:      #1C1B18;
+  --bg-3:      #242320;
+  --surface:   rgba(26,25,22,.72);
+  --ink:       rgba(250,250,248,.92);
+  --ink-2:     rgba(250,250,248,.58);
+  --ink-3:     rgba(250,250,248,.36);
+  --ink-4:     rgba(250,250,248,.20);
+  --rule:      rgba(250,250,248,.09);
+  --rule-med:  rgba(250,250,248,.16);
+  --accent:    var(--gold);
+  --accent-dk: var(--gold-lt);
+  --accent-2:  var(--navy-lt);
+  --accent-2dk:var(--navy-lt);
+  --up-bg:     rgba(61,122,82,.15);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  font-family: var(--f-sans);
+  font-size: var(--t-base);
+  font-weight: 400;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--f-sans); cursor: pointer; background: none; border: none; padding: 0; }
+input  { font-family: var(--f-sans); }
+svg    { display: block; flex-shrink: 0; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--rule-med); border-radius: 2px; }
+
+/* ══════════════════════════════════════════
+   ACCENT BAR — thin coloured top strip (Cargo sites often have this)
+══════════════════════════════════════════ */
+.accent-bar {
+  height: 2px;
+  background: linear-gradient(90deg, #1A1916 0%, #8C6E3E 55%, #B8955A 100%);
+  flex-shrink: 0;
+}
+[data-theme="dark"] .accent-bar { background: linear-gradient(90deg, #242320 0%, #8C6E3E 55%, #B8955A 100%); }
+
+/* ══════════════════════════════════════════
+   LIQUID GLASS — Apple-inspired surfaces
+══════════════════════════════════════════ */
+.glass {
+  background: rgba(250,250,248,.12);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: var(--sh-md);
+}
+[data-theme="dark"] .glass {
+  background: rgba(26,25,22,.48);
+  border-color: rgba(255,255,255,.10);
+  box-shadow: var(--sh-md);
+}
+
+/* ══════════════════════════════════════════
+   HEADER — Cargo R547 pattern:
+   Logo far left · everything else far right
+   Full-width rule at bottom · weight-500 nav
+══════════════════════════════════════════ */
+.hd {
+  height: var(--hd-h);
+  background: rgba(250,250,248,.94);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--rule);
+  box-shadow: var(--sh-sm);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--pad);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 200;
+}
+[data-theme="dark"] .hd {
+  background: rgba(18,19,15,.92);
+  border-bottom-color: rgba(255,255,255,.08);
+}
+
+/* Logo — Gambarino display */
+.hd-logo {
+  font-family: var(--f-display);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  line-height: 1;
+}
+.hd-logo sup {
+  font-family: var(--f-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--gold);
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+/* Spacer pushes nav to the right */
+.hd-spacer { flex: 1; }
+
+/* Nav — logo left, nav RIGHT (Cargo R547 pattern) */
+.hd-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.hd-nav a {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap);
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 0 var(--s4);
+  transition: color 0.14s;
+  line-height: var(--hd-h);
+  position: relative;
+}
+.hd-nav a:hover { color: var(--ink); }
+.hd-nav a.on { color: var(--ink); }
+/* Active indicator — thin bottom rule on active link */
+.hd-nav a.on::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: var(--s4); right: var(--s4);
+  height: 1.5px;
+  background: var(--accent-dk);
+}
+/* Nav divider */
+.hd-sep {
+  font-size: 10px;
+  color: var(--rule-med);
+  user-select: none;
+}
+
+.badge-soon {
+  font-family: var(--f-sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--gold-bg);
+  color: var(--accent-dk);
+  border: 1px solid var(--gold-bd);
+  padding: 1px 5px;
+  border-radius: var(--pill);
+  vertical-align: middle;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.hd-end {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-left: var(--s5);
+  padding-left: var(--s5);
+  border-left: 1px solid var(--rule);
+}
+
+.btn-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-2);
+  transition: color 0.14s, background 0.14s;
+}
+.btn-icon:hover { color: var(--ink); background: var(--bg-2); }
+
+.hamburger {
+  display: none;
+  width: 30px; height: 30px;
+  align-items: center; justify-content: center;
+  color: var(--ink-2);
+  cursor: pointer;
+  margin-right: var(--s3);
+}
+
+/* ══════════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════════ */
+.app {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+/* Hide sidebar on hero view */
+.app.hero-active > .sidebar { display: none; }
+
+/* ══════════════════════════════════════════
+   SIDEBAR — Cargo: rule-separated columns,
+   condensed caps labels, mono data
+══════════════════════════════════════════ */
+.sidebar {
+  width: var(--sb-w);
+  background: var(--bg);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: transform .28s cubic-bezier(.4,0,.2,1);
+}
+
+.sb-tabs {
+  display: flex;
+  padding: 0 var(--pad-sm);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+.sb-tab {
+  font-family: var(--f-cond);
+  font-size: var(--t-cap);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: var(--s3) var(--s2);
+  cursor: pointer;
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: -1px;
+  transition: color .14s;
+}
+.sb-tab:hover { color: var(--ink-2); }
+.sb-tab.on { color: var(--ink); border-bottom-color: var(--ink); }
+
+.sb-body { flex: 1; overflow-y: auto; padding: var(--s6) var(--pad-sm); }
+.sb-body.hide { display: none; }
+
+/* Rule-separated blocks */
+.rule-block {
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s5);
+}
+
+.lbl {
+  font-family: var(--f-cond);
+  font-size: var(--t-cap);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.sub-lbl { font-size: var(--t-2xs); color: var(--ink-3); margin-bottom: var(--s3); }
+
+.trend-val {
+  font-family: var(--f-serif);
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.trend-val.gold { color: var(--navy); }
+.trend-cmp { font-size: var(--t-2xs); color: var(--ink-3); }
+
+/* Sparkline */
+.spark { height: 48px; margin: var(--s3) 0 var(--s2); }
+.spark svg { width: 100%; height: 100%; }
+.axis { display: flex; justify-content: space-between; }
+.axis span { font-family: var(--f-mono); font-size: 9px; color: var(--ink-4); }
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--s2) 0;
+  border-top: 1px solid var(--rule);
+}
+.data-row .k { font-size: var(--t-2xs); color: var(--ink-3); }
+.data-row .v { font-family: var(--f-mono); font-size: var(--t-sm); color: var(--ink); }
+
+/* Signal list */
+.sigs { display: flex; flex-direction: column; }
+.sig {
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--rule);
+  transition: background .14s;
+}
+.sig.visible { opacity: 1; }
+.sig:last-child { border-bottom: none; }
+.sig:hover { background: var(--bg-2); }
+.sig-g { font-size: 13px; margin-bottom: var(--s1); opacity: .45; }
+.sig-t { font-family: var(--f-serif); font-size: 13px; font-style: italic; color: var(--ink); line-height: 1.4; margin-bottom: 2px; }
+.sig-d { font-size: var(--t-2xs); color: var(--ink-3); line-height: 1.5; }
+.up-c { color: var(--up); }
+.dn-c { color: var(--down); }
+
+/* Noise */
+.noise-pills { display: flex; gap: var(--s2); margin-bottom: var(--s4); flex-wrap: wrap; }
+.np {
+  font-family: var(--f-cond);
+  font-size: var(--t-2xs); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: var(--pill); border: 1px solid var(--rule-med); color: var(--ink-3);
+}
+.np.q { color: var(--up); border-color: var(--up); background: var(--up-bg); }
+.np.m { color: #8A6010; border-color: #D4A050; background: #FDF4E0; }
+.np.l { color: var(--down); border-color: var(--down); background: #F5EAEA; }
+
+.noise-rows { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s3); }
+.nr { display: flex; align-items: center; gap: var(--s2); }
+.nr-a { font-size: var(--t-xs); color: var(--ink-2); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nr-t { flex: 1; height: 2px; background: var(--rule); border-radius: 1px; }
+.nr-f { height: 2px; border-radius: 1px; }
+.nr-f.q { background: var(--up); }
+.nr-f.m { background: #C08040; }
+.nr-f.l { background: var(--down); }
+.nr-db { font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); min-width: 26px; text-align: right; }
+
+.show-more { width: 100%; padding: var(--s2); font-family: var(--f-cond); font-size: var(--t-cap); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); border: 1px solid var(--rule); cursor: pointer; transition: all .14s; margin-bottom: var(--s4); }
+.show-more:hover { background: var(--bg-2); color: var(--ink); }
+
+.noise-hl { background: var(--up-bg); border: 1px solid #C0DCC8; padding: var(--s3); font-size: var(--t-2xs); color: var(--up); line-height: 1.5; border-radius: var(--r); }
+
+/* Hip */
+.trs { display: flex; flex-direction: column; }
+.tr {
+  display: flex; align-items: flex-start; gap: var(--s3);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--rule);
+  transition: background .14s;
+}
+.tr.visible { opacity: 1; }
+.tr:last-child { border-bottom: none; }
+.tr:hover { background: var(--bg-2); }
+.tr-ico { width: 26px; height: 26px; border: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.tr-b { flex: 1; }
+.tr-n { font-size: var(--t-xs); font-weight: 500; color: var(--ink); }
+.tr-s { font-size: var(--t-2xs); color: var(--ink-3); }
+.tr-m { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.tr-p { font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); }
+.tr-c { font-size: var(--t-2xs); font-weight: 500; color: var(--up); }
+.hip-note { font-size: var(--t-2xs); color: var(--ink-3); font-style: italic; margin-top: var(--s3); line-height: 1.5; }
+
+/* ══════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════ */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ══════════════════════════════════════════
+   HERO VIEW
+══════════════════════════════════════════ */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;
+}
+.hero.hide { display: none; }
+.hero::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(10,9,7,.70);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Centered hero section */
+.hero-l {
+  flex: 0 0 auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--s16) var(--pad) var(--s12);
+  position: relative;
+  z-index: 1;
+}
+
+/* Issue number / editorial tag */
+.hero-tag {
+  font-family: var(--f-mono);
+  font-size: 9px;
+  color: rgba(248,242,234,.60);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: var(--s8);
+}
+
+.hero-hed {
+  font-family: var(--f-display);
+  font-size: var(--hero-size);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  color: #FFFFFF;
+  margin-bottom: var(--s10);
+  max-width: 680px;
+  text-shadow: 0 2px 40px rgba(0,0,0,.5);
+}
+
+/* Glass search field */
+.search-wrap { max-width: 580px; width: 100%; margin: 0 auto var(--s5); }
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  background: rgba(255,255,255,.14);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255,255,255,.20);
+  box-shadow: 0 4px 24px rgba(0,0,0,.12);
+  border-radius: var(--r3);
+  padding: var(--s3) var(--s4);
+}
+.s-inp {
+  flex: 1;
+  border: none; outline: none; background: transparent;
+  font-family: var(--f-sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: #FFFFFF;
+  letter-spacing: -.01em;
+}
+.s-inp::placeholder { color: rgba(255,255,255,.55); }
+
+.s-btns { display: flex; align-items: center; gap: var(--s2); }
+.btn-voice {
+  color: rgba(255,255,255,.6);
+  transition: color .14s;
+  padding: 2px;
+}
+.btn-voice:hover { color: rgba(255,255,255,.9); }
+
+.btn-go {
+  width: 32px; height: 32px;
+  background: var(--gold);
+  color: var(--charcoal);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .12s, filter .14s;
+  flex-shrink: 0;
+}
+.btn-go:hover { filter: brightness(1.08); transform: scale(1.07); }
+.btn-go:active { transform: scale(.97); filter: brightness(.92); }
+
+/* Chips */
+.chips {
+  display: flex; flex-wrap: wrap; gap: var(--s2);
+  max-width: 580px;
+  width: 100%;
+  margin: 0 auto var(--s6);
+  justify-content: center;
+}
+.chip {
+  font-family: var(--f-sans);
+  font-size: 11px;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.75);
+  padding: var(--s1) var(--s3);
+  border: 1px solid rgba(255,255,255,.18);
+  cursor: pointer;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: none;
+  transition: all .14s;
+  white-space: nowrap;
+  border-radius: var(--r);
+}
+.chip:hover { background: var(--gold); border-color: var(--gold); color: var(--charcoal); }
+
+/* Mode tabs — Sale / Rent / Noise / Hip */
+.mode-tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding-top: var(--s5);
+  max-width: 580px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+}
+.mode-tab {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  cursor: pointer;
+  transition: color .14s, border-bottom-color .14s;
+  padding: var(--s2) var(--s4);
+  border-radius: 0;
+  border: none;
+  border-bottom: 1.5px solid transparent;
+}
+.mode-tab:hover { color: rgba(255,255,255,.85); }
+.mode-tab.on {
+  color: #FFFFFF;
+  background: transparent;
+  border-bottom-color: var(--gold);
+}
+
+/* Hero right panel — hidden in V3 hero (content moved below) */
+.hero-r { display: none; }
+
+/* ══ HERO DATA — full-width section below hero ══ */
+.hero-data {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+.mkt-tabs {
+  display: flex;
+  padding: 0 var(--pad);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+}
+.mkt-tab {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: var(--s3) var(--s4);
+  cursor: pointer;
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: -1px;
+  transition: color .14s;
+}
+.mkt-tab:hover { color: var(--ink-2); }
+.mkt-tab.on { color: var(--gold); border-bottom-color: var(--gold); }
+.mkt-body {
+  padding: var(--s6) var(--pad);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s6);
+  max-width: 1200px;
+}
+.mkt-body.hide { display: none; }
+
+/* ══════════════════════════════════════════
+   MAP VIEW
+══════════════════════════════════════════ */
+.mapview { display: none; flex: 1; overflow: hidden; }
+.mapview.on { display: flex; }
+
+/* AI Panel — far left, glass surface */
+.ai-panel {
+  width: var(--ai-w);
+  background: var(--bg-2);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.ai-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--s5);
+  height: 48px;
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+  background: var(--bg-3);
+}
+.ai-title {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.ai-nm {
+  font-family: var(--f-sans);
+  font-size: var(--t-md);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.ai-badge {
+  font-family: var(--f-sans);
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--gold); color: var(--charcoal);
+  padding: 2px 6px; border-radius: var(--pill);
+}
+
+.ai-msgs {
+  flex: 1; overflow-y: auto;
+  padding: var(--s5);
+  display: flex; flex-direction: column; gap: var(--s4);
+}
+.msg-u {
+  align-self: flex-end;
+  max-width: 78%;
+  background: var(--gold);
+  color: var(--charcoal);
+  border-radius: var(--r3) var(--r3) var(--r) var(--r3);
+  padding: var(--s3) var(--s4);
+  font-size: var(--t-xs);
+  font-family: var(--f-sans);
+  line-height: 1.5;
+}
+.msg-a {
+  align-self: flex-start;
+  max-width: 90%;
+  font-size: var(--t-xs);
+  font-family: var(--f-sans);
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+.sug-list { display: flex; flex-direction: column; gap: var(--s2); margin-top: var(--s3); }
+.sug {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3);
+  border: 1px solid var(--rule);
+  border-radius: var(--r2);
+  cursor: pointer; transition: all .14s;
+  background: var(--bg-3);
+}
+.sug:hover { border-color: var(--gold); background: var(--bg-2); }
+.sug-ico {
+  width: 26px; height: 26px;
+  border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+  background: var(--bg-2);
+}
+.sug-b { flex: 1; }
+.sug-n { font-size: var(--t-xs); font-weight: 600; color: var(--ink); font-family: var(--f-sans); }
+.sug-d { font-size: 10px; color: var(--ink-3); margin-top: 1px; font-family: var(--f-sans); }
+.sug-arr { color: var(--ink-4); }
+
+.qrs { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s3); }
+.qr {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap);
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: var(--s1) var(--s3);
+  border: 1px solid var(--gold);
+  background: transparent;
+  cursor: pointer; transition: all .14s;
+  border-radius: var(--r);
+}
+.qr:hover { background: var(--gold); color: var(--charcoal); border-color: var(--gold); }
+
+.ai-input-area {
+  padding: var(--s4) var(--s5);
+  border-top: 1px solid var(--rule);
+  flex-shrink: 0;
+  background: var(--bg-3);
+}
+.ai-inp-row {
+  display: flex; align-items: center; gap: var(--s2);
+  border: 1px solid var(--rule-med);
+  border-radius: var(--r3);
+  padding: var(--s2) var(--s3);
+  background: var(--bg-2);
+  transition: border-color .2s;
+}
+.ai-inp-row:focus-within { border-color: var(--gold); }
+.ai-inp {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: var(--f-sans);
+  font-size: 13px; font-weight: 400;
+  color: var(--ink);
+}
+.ai-inp::placeholder { color: var(--ink-4); }
+.btn-mic-s { color: var(--ink-4); padding: 2px; transition: color .14s; }
+.btn-mic-s:hover { color: var(--ink); }
+.btn-snd {
+  width: 26px; height: 26px;
+  background: var(--gold); color: var(--charcoal);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .14s;
+}
+.btn-snd:hover { filter: brightness(1.08); }
+.btn-snd:active { transform: scale(.95); }
+
+/* Map */
+.map-wrap { flex: 1; position: relative; overflow: hidden; }
+#map { width: 100%; height: 100%; }
+
+/* Hide default mapbox controls */
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-bottom-right,
+.mapboxgl-ctrl-top-left,
+.mapboxgl-ctrl-top-right { display: none !important; }
+.mapboxgl-ctrl-attrib { display: none !important; }
+
+/* Market insights — now a floating bar like a Cargo element */
+.insights {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: rgba(255,255,255,.80);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,.4);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
+  display: flex; align-items: stretch;
+  z-index: 10;
+}
+[data-theme="dark"] .insights {
+  background: rgba(15,14,13,.82);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.ins-i {
+  flex: 1; padding: var(--s3) var(--s4);
+  border-right: 1px solid var(--rule);
+  display: flex; flex-direction: column; gap: var(--s1);
+  cursor: pointer;
+  transition: border-left .14s, padding-left .14s;
+}
+[data-theme="dark"] .ins-i { border-right-color: rgba(255,255,255,.06); }
+.ins-i:last-child { border-right: none; }
+.ins-i:hover { border-left: 2px solid var(--gold); padding-left: calc(var(--s4) - 2px); }
+.ins-chart { height: 16px; }
+.ins-lbl { font-family: var(--f-serif); font-size: 11px; font-style: italic; color: var(--ink-2); line-height: 1.3; }
+[data-theme="dark"] .ins-lbl { color: rgba(255,255,255,.45); }
+.ins-v { font-family: var(--f-cond); font-size: var(--t-cap); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.ins-v.up { color: var(--up); }
+.ins-v.dn { color: var(--down); }
+.ins-v.hi { color: var(--ink); }
+[data-theme="dark"] .ins-v.hi { color: rgba(255,255,255,.8); }
+
+/* Custom map controls */
+.map-ctrl {
+  position: absolute;
+  right: var(--s4); top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: var(--s2);
+  z-index: 10;
+}
+.map-btn {
+  width: 28px; height: 28px;
+  background: var(--white);
+  border: 1px solid var(--rule-med);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-2);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  transition: all .14s;
+}
+.map-btn:hover { background: var(--bg-2); color: var(--ink); }
+.map-btn.active { background: var(--gold); border-color: var(--gold); color: var(--white); }
+[data-theme="dark"] .map-btn { background: rgba(30,28,24,.9); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
+[data-theme="dark"] .map-btn:hover { background: rgba(50,48,44,.9); }
+[data-theme="dark"] .map-btn.active { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+
+/* ══ DATA PANEL — right side in map view ══ */
+.data-panel {
+  width: var(--panel-w);
+  background: var(--bg);
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+.dp-tabs {
+  display: flex;
+  padding: 0 var(--s4);
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+  background: var(--bg-2);
+}
+.dp-tab {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: var(--s3) var(--s2);
+  cursor: pointer;
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: -1px;
+  transition: color .14s;
+}
+.dp-tab:hover { color: var(--ink-2); }
+.dp-tab.on { color: var(--gold); border-bottom-color: var(--gold); }
+.dp-body { flex: 1; overflow-y: auto; padding: var(--s5) var(--s4); }
+.dp-body.hide { display: none; }
+
+/* Custom cluster pins */
+.z3-pin {
+  background: rgba(255,255,255,.92);
+  border: 2px solid var(--gold);
+  padding: 4px 10px;
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: var(--sh-sm);
+  line-height: 1.2;
+  border-radius: var(--r2);
+  position: relative;
+}
+.z3-pin.rent { border-color: var(--navy); }
+.z3-pin:hover { transform: scale(1.1); box-shadow: var(--sh-md); }
+.z3-pin.sel { background: var(--gold); border-color: var(--gold-bd); }
+.z3-pin.rent.sel { background: var(--navy); border-color: var(--navy-lt); }
+.z3-pin.sel::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 2px solid var(--gold);
+  border-radius: calc(var(--r2) + 6px);
+  animation: pinPulse 1.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.z3-pin.rent.sel::after { border-color: var(--navy); }
+@keyframes pinPulse {
+  0%, 100% { opacity: .7; transform: scale(1); }
+  50%       { opacity: 0; transform: scale(1.3); }
+}
+.z3-pin-n { font-family: var(--f-mono); font-size: 11px; color: var(--ink); white-space: nowrap; font-weight: 400; }
+.z3-pin.sel .z3-pin-n { color: var(--charcoal); }
+.z3-pin.rent.sel .z3-pin-n { color: rgba(250,250,248,.92); }
+.z3-pin-s { font-family: var(--f-sans); font-size: 8px; color: var(--ink-3); letter-spacing: .04em; white-space: nowrap; font-weight: 500; }
+.z3-pin.sel .z3-pin-s { color: rgba(26,25,22,.6); }
+.z3-pin.rent.sel .z3-pin-s { color: rgba(250,250,248,.6); }
+[data-theme="dark"] .z3-pin { background: rgba(36,35,32,.92); }
+[data-theme="dark"] .z3-pin .z3-pin-n { color: rgba(250,250,248,.85); }
+[data-theme="dark"] .z3-pin.sel { background: var(--gold); }
+[data-theme="dark"] .z3-pin.sel .z3-pin-n { color: var(--charcoal); }
+[data-theme="dark"] .z3-pin.rent.sel { background: var(--navy); }
+[data-theme="dark"] .z3-pin.rent.sel .z3-pin-n { color: rgba(250,250,248,.92); }
+
+/* Property panel — slides over data panel on pin click */
+.prop-panel {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: var(--panel-w);
+  background: var(--bg);
+  border-left: 1px solid var(--rule);
+  display: flex; flex-direction: column; overflow: hidden;
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  z-index: 20;
+  pointer-events: none;
+}
+.prop-panel.open { transform: translateX(0); pointer-events: auto; }
+
+.prop-img {
+  height: 200px; flex-shrink: 0;
+  background: var(--bg-3);
+  position: relative; overflow: hidden;
+}
+/* Buy = gold top border, Rent = navy top border */
+.prop-panel.buy-accent .prop-img::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gold); z-index: 2;
+}
+.prop-panel.rent-accent .prop-img::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--navy); z-index: 2;
+}
+
+.prop-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.3) 0%, transparent 55%);
+}
+
+.btn-fav {
+  position: absolute; top: var(--s3); right: var(--s3);
+  width: 30px; height: 30px;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3);
+  cursor: pointer; transition: all .14s;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 50%;
+}
+.btn-fav:hover { background: var(--white); color: var(--down); }
+
+.btn-close-prop {
+  position: absolute; top: var(--s3); left: var(--s3);
+  width: 30px; height: 30px;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-2);
+  cursor: pointer; transition: all .14s;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 50%;
+  z-index: 3;
+}
+.btn-close-prop:hover { background: var(--white); color: var(--ink); }
+
+.prop-body { padding: var(--s4) var(--s4); flex: 1; overflow-y: auto; }
+.prop-name {
+  font-family: var(--f-sans);
+  font-size: 18px; font-weight: 700;
+  letter-spacing: -.02em; line-height: 1.2;
+  color: var(--ink); margin-bottom: 2px;
+}
+.prop-sub {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: var(--s3); font-weight: 500;
+}
+.prop-stats {
+  display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap;
+  padding-bottom: var(--s3); border-bottom: 1px solid var(--rule); margin-bottom: var(--s3);
+}
+.ps { display: flex; align-items: center; gap: var(--s1); font-size: var(--t-xs); color: var(--ink-2); font-family: var(--f-sans); }
+.prop-price { font-family: var(--f-mono); font-size: var(--t-md); color: var(--ink); white-space: nowrap; font-weight: 400; }
+.prop-price span { font-size: 10px; color: var(--ink-3); }
+.prop-meta { font-size: var(--t-xs); color: var(--ink-3); margin-bottom: var(--s3); font-family: var(--f-sans); }
+.prop-desc { font-family: var(--f-sans); font-size: 13px; font-weight: 400; color: var(--ink-2); line-height: 1.6; margin-bottom: var(--s3); }
+.prop-tags { display: flex; flex-wrap: wrap; gap: var(--s1); margin-bottom: var(--s3); }
+.prop-tag {
+  font-size: 10px; font-weight: 500; font-family: var(--f-sans);
+  color: var(--ink-3); border: 1px solid var(--rule-med);
+  padding: 2px 8px; border-radius: var(--pill);
+}
+
+.prop-actions {
+  display: flex; gap: var(--s2);
+  padding: var(--s3) var(--s4) var(--s4);
+  flex-shrink: 0;
+}
+.btn-cta {
+  flex: 1; height: 38px;
+  background: var(--gold); color: var(--charcoal);
+  font-family: var(--f-sans); font-size: var(--t-cap);
+  font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  transition: filter .14s; border-radius: var(--r2);
+}
+.btn-cta:hover { filter: brightness(1.06); }
+.btn-cta:active { transform: scale(.97); filter: brightness(.92); }
+.prop-panel.rent-accent .btn-cta {
+  background: var(--navy); color: #FFFFFF;
+}
+.btn-sec {
+  flex: 1; height: 38px;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--rule-med);
+  font-family: var(--f-sans); font-size: var(--t-cap);
+  font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  transition: all .14s; border-radius: var(--r2);
+}
+.btn-sec:hover { background: var(--bg-2); }
+
+/* ══════════════════════════════════════════
+   SIGN IN MODAL
+══════════════════════════════════════════ */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 500;
+  display: none; align-items: center; justify-content: center;
+  padding: var(--s5);
+}
+.modal-bg.on { display: flex; }
+.modal {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  width: 100%; max-width: 360px;
+  padding: var(--s10) var(--pad-sm);
+  box-shadow: var(--sh-overlay);
+  animation: popIn .16s ease;
+  border-radius: var(--r2);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.96) translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.modal-hed {
+  font-family: var(--f-serif);
+  font-size: 30px; font-weight: 300;
+  letter-spacing: -.025em;
+  color: var(--ink); margin-bottom: var(--s6);
+}
+.auth-rows { display: flex; flex-direction: column; gap: var(--s3); }
+.auth-btn {
+  width: 100%; height: 42px;
+  border: 1px solid var(--rule-med);
+  display: flex; align-items: center; justify-content: center; gap: var(--s3);
+  font-family: var(--f-cond); font-size: var(--t-cap); font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink); cursor: pointer; transition: background .14s; background: var(--white);
+  border-radius: var(--r);
+}
+.auth-btn:hover { background: var(--bg-2); }
+.auth-btn.off { color: var(--ink-3); cursor: default; }
+.auth-btn.off:hover { background: var(--white); }
+.soon-lbl { font-size: 9px; color: var(--ink-4); letter-spacing: 0; text-transform: none; font-family: var(--f-sans); font-weight: 400; }
+
+/* ── Mobile overlay ── */
+.mob-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.2); z-index: 150; }
+.mob-bg.on { display: block; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  :root { --panel-w: 240px; }
+  .insights { display: none; }
+}
+@media (max-width: 900px) {
+  :root { --ai-w: 280px; }
+  .data-panel { display: none; }
+}
+@media (max-width: 860px) {
+  :root { --hero-size: clamp(44px, 9vw, 72px); }
+  .hero-l { padding: var(--s12) var(--s6) var(--s8); }
+  .mgmt-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .hd-nav { display: none; }
+  .hamburger { display: flex; }
+  .hd-end { border-left: none; padding-left: 0; }
+  .sidebar { position: absolute; top: 0; left: 0; bottom: 0; z-index: 160; transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .hero-l { padding: var(--s10) var(--s5) var(--s8); }
+  .mapview { flex-direction: column; }
+  .ai-panel { width: 100%; height: 46vh; border-right: none; border-bottom: 1px solid var(--rule); }
+  .mkt-body { grid-template-columns: 1fr; }
+  #mgmtView { padding: var(--s6) var(--s4); }
+}
+
+/* ── Sparkline draw animation ── */
+@keyframes draw {
+  from { stroke-dashoffset: 240; }
+  to   { stroke-dashoffset: 0; }
+}
+.drawp { stroke-dasharray: 240; stroke-dashoffset: 240; animation: draw 1.2s ease forwards .2s; }
+
+/* ── Counter animation ── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.trend-val { }
+
+/* ══ MARKET TICKER ══ */
+.ticker {
+  height: 28px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.ticker-track {
+  display: flex; align-items: center; gap: var(--s5);
+  white-space: nowrap;
+  animation: ticker 30s linear infinite;
+  height: 100%;
+  padding: 0 var(--s5);
+}
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ti { font-family: var(--f-mono); font-size: 9px; color: var(--ink-3); letter-spacing: .04em; text-transform: uppercase; }
+.ti b { color: var(--ink); font-weight: 400; }
+.ti-sep { color: var(--rule-med); font-size: 10px; }
+
+/* ══ PROPERTY PHOTO ══ */
+.prop-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  position: absolute; inset: 0;
+  transition: transform .4s ease;
+}
+.prop-img:hover .prop-photo { transform: scale(1.04); }
+
+/* ══ MAP POPUP ══ */
+.mapboxgl-popup-content { padding: 0 !important; box-shadow: 0 8px 24px rgba(0,0,0,.16) !important; border-radius: var(--r2) !important; border: 1px solid var(--rule-med) !important; overflow: hidden; }
+.mapboxgl-popup-tip { display: none; }
+.popup-inner { padding: var(--s3) var(--s4); background: var(--bg); }
+.popup-label { font-family: var(--f-sans); font-size: var(--t-cap); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 2px; font-weight: 600; }
+.popup-count { font-family: var(--f-sans); font-size: 18px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.popup-price { font-family: var(--f-mono); font-size: 11px; color: var(--ink-2); margin: var(--s1) 0 var(--s3); }
+.popup-price span { color: var(--ink-4); }
+.popup-cta { width: 100%; height: 30px; background: var(--gold); color: var(--charcoal); font-family: var(--f-sans); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; border: none; transition: filter .14s; border-radius: 0; }
+.popup-cta:hover { filter: brightness(1.06); }
+
+/* ══ PROPERTY MANAGEMENT PAGE ══ */
+#mgmtView {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+  padding: var(--s10) var(--pad);
+}
+#mgmtView.on { display: block; }
+.mgmt-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.mgmt-hed {
+  font-family: var(--f-display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: var(--s2);
+  letter-spacing: -.02em;
+}
+.mgmt-sub { font-size: var(--t-md); color: var(--ink-3); margin-bottom: var(--s8); }
+.mgmt-card {
+  background: var(--bg-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--r3);
+  padding: var(--s8);
+  box-shadow: 0 2px 12px rgba(18,19,15,.06);
+}
+.mgmt-section { margin-bottom: var(--s6); }
+.mgmt-section-title {
+  font-family: var(--f-sans);
+  font-size: var(--t-cap);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: var(--s3);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--rule);
+}
+.mgmt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+.mgmt-field { display: flex; flex-direction: column; gap: var(--s1); }
+.mgmt-field.full { grid-column: 1 / -1; }
+.mgmt-label { font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); font-family: var(--f-sans); letter-spacing: .04em; }
+.mgmt-input, .mgmt-select, .mgmt-textarea {
+  font-family: var(--f-sans);
+  font-size: var(--t-sm);
+  color: var(--ink);
+  background: var(--bg-2);
+  border: 1px solid var(--rule-med);
+  border-radius: var(--r2);
+  padding: var(--s3) var(--s4);
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+.mgmt-input:focus, .mgmt-select:focus, .mgmt-textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(184,149,90,.18);
+}
+.mgmt-textarea { resize: vertical; min-height: 80px; }
+.mgmt-type-toggle { display: flex; gap: var(--s2); }
+.type-btn {
+  flex: 1; padding: var(--s3);
+  font-family: var(--f-sans); font-size: var(--t-sm); font-weight: 600;
+  border: 2px solid var(--rule-med);
+  border-radius: var(--r2);
+  cursor: pointer;
+  transition: all .14s;
+  background: transparent;
+  color: var(--ink-3);
+}
+.type-btn.on-buy { border-color: var(--gold); background: var(--gold-bg); color: var(--accent-dk); }
+.type-btn.on-rent { border-color: var(--navy); background: var(--navy-bg); color: var(--navy); }
+.amenity-grid { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.amenity-cb { display: flex; align-items: center; gap: var(--s1); cursor: pointer; }
+.amenity-cb input[type="checkbox"] { accent-color: var(--gold); width: 14px; height: 14px; }
+.amenity-cb span { font-size: var(--t-xs); color: var(--ink-2); font-family: var(--f-sans); }
+.photo-drop {
+  border: 2px dashed var(--rule-med);
+  border-radius: var(--r2);
+  padding: var(--s8);
+  text-align: center;
+  cursor: pointer;
+  transition: all .14s;
+  background: var(--bg-2);
+}
+.photo-drop:hover { border-color: var(--gold); background: var(--gold-bg); }
+.photo-drop-ico { font-size: 24px; margin-bottom: var(--s2); }
+.photo-drop-txt { font-size: var(--t-sm); color: var(--ink-3); font-family: var(--f-sans); }
+.photo-drop input { display: none; }
+.btn-submit {
+  width: 100%; height: 48px;
+  background: var(--gold); color: var(--charcoal);
+  font-family: var(--f-sans); font-size: var(--t-sm);
+  font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  border-radius: var(--r2);
+  transition: filter .14s;
+  margin-top: var(--s4);
+  cursor: pointer;
+  border: none;
+}
+.btn-submit:hover { filter: brightness(1.06); }
+.btn-submit:active { transform: scale(.98); filter: brightness(.92); }
+
+/* ══ DARK MODE OVERRIDES ══ */
+[data-theme="dark"] .msg-u { background: var(--gold); color: var(--charcoal); }
+/* Modal */
+[data-theme="dark"] .modal { background: var(--bg-2); }
+[data-theme="dark"] .auth-btn { background: var(--bg-3); color: var(--ink); }
+[data-theme="dark"] .auth-btn:hover { background: var(--bg-2); }
+[data-theme="dark"] .mgmt-card { background: var(--bg-2); }
+[data-theme="dark"] .mgmt-input,
+[data-theme="dark"] .mgmt-select,
+[data-theme="dark"] .mgmt-textarea { background: var(--bg-3); color: var(--ink); }
+[data-theme="dark"] .photo-drop { background: var(--bg-3); }
+[data-theme="dark"] .data-panel { background: var(--bg-2); }
+[data-theme="dark"] .dp-tabs { background: var(--bg-3); }
+[data-theme="dark"] .ai-hd { background: var(--bg-3); }
+[data-theme="dark"] .ai-input-area { background: var(--bg-3); }
+[data-theme="dark"] .sug { background: var(--bg-3); }
+[data-theme="dark"] .sug:hover { background: var(--bg-2); }
+/* Search field on hero (dark bg already) */
+[data-theme="dark"] .s-inp { color: rgba(238,229,233,.9); }
+[data-theme="dark"] .s-inp::placeholder { color: rgba(238,229,233,.4); }
+
+</style>
+</head>
+<body>
+
+<!-- Thin accent stripe — top of page -->
+<div class="accent-bar"></div>
+
+<!-- ══════════════════════════════════════════
+  HEADER — Cargo ~Graphic R547 pattern:
+  logo left · wide spacer · nav + user RIGHT
+══════════════════════════════════════════ -->
+<header class="hd">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect y="0" width="18" height="1.4" rx=".7" fill="currentColor"/><rect y="5.3" width="13" height="1.4" rx=".7" fill="currentColor"/><rect y="10.6" width="18" height="1.4" rx=".7" fill="currentColor"/></svg>
+  </button>
+
+  <span class="hd-logo" onclick="showHero()">Z<sup>3</sup></span>
+
+  <!-- Spacer — Cargo pushes nav to far right -->
+  <div class="hd-spacer"></div>
+
+  <nav class="hd-nav">
+    <a href="#" id="navHome" class="on" onclick="showHero();return false;">Home</a>
+    <span class="hd-sep">/</span>
+    <a href="#" id="navSearch" onclick="launchSearch();return false;">Search</a>
+    <span class="hd-sep">/</span>
+    <a href="#" id="navMgmt" onclick="showMgmt();return false;">Property Mgmt</a>
+  </nav>
+
+  <div class="hd-end">
+    <button class="btn-icon" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M6 1a5 5 0 100 10A5 5 0 006 1z" fill="currentColor" opacity=".1"/><path d="M6 1c-.75 1.8-.9 4.5 0 10C3.2 11 1 8.8 1 6s2.2-5 5-5z" fill="currentColor"/></svg>
+    </button>
+    <button class="btn-icon" onclick="openModal()" aria-label="Sign in" title="Sign in">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.8" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 15c0-3.038 2.91-5.5 6.5-5.5s6.5 2.462 6.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Market ticker strip -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ti">SALE <b>AED 1,280</b>/sqft</span><span class="ti-sep">·</span>
+    <span class="ti">SALE +<b>8.5%</b> (6mo)</span><span class="ti-sep">·</span>
+    <span class="ti">RENT <b>AED 97</b>/sqft/yr</span><span class="ti-sep">·</span>
+    <span class="ti">RENT +<b>14.1%</b> YoY</span><span class="ti-sep">·</span>
+    <span class="ti">ARABIAN RANCHES <b>32dB</b> quietest</span><span class="ti-sep">·</span>
+    <span class="ti">AL QUOZ trending <b>+45%</b></span><span class="ti-sep">·</span>
+    <span class="ti">JUMEIRAH 2BR Sea View <b>AED 15,000</b>/mo</span><span class="ti-sep">·</span>
+    <span class="ti">DOWNTOWN avg yield <b>6.7%</b></span><span class="ti-sep">·</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ti">SALE <b>AED 1,280</b>/sqft</span><span class="ti-sep">·</span>
+    <span class="ti">SALE +<b>8.5%</b> (6mo)</span><span class="ti-sep">·</span>
+    <span class="ti">RENT <b>AED 97</b>/sqft/yr</span><span class="ti-sep">·</span>
+    <span class="ti">RENT +<b>14.1%</b> YoY</span><span class="ti-sep">·</span>
+    <span class="ti">ARABIAN RANCHES <b>32dB</b> quietest</span><span class="ti-sep">·</span>
+    <span class="ti">AL QUOZ trending <b>+45%</b></span><span class="ti-sep">·</span>
+    <span class="ti">JUMEIRAH 2BR Sea View <b>AED 15,000</b>/mo</span><span class="ti-sep">·</span>
+    <span class="ti">DOWNTOWN avg yield <b>6.7%</b></span><span class="ti-sep">·</span>
+  </div>
+</div>
+
+<div class="mob-bg" id="mobBg" onclick="closeSidebar()"></div>
+
+<!-- ══════════════════════════════════════════
+  APP SHELL
+══════════════════════════════════════════ -->
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-tabs">
+      <div class="sb-tab on" onclick="sbTab(this,'sale')">Sale</div>
+      <div class="sb-tab" onclick="sbTab(this,'rent')">Rent</div>
+      <div class="sb-tab" onclick="sbTab(this,'noise')">Noise</div>
+      <div class="sb-tab" onclick="sbTab(this,'hip')">Hip</div>
+    </div>
+
+    <!-- SALE -->
+    <div class="sb-body" id="sb-sale">
+      <div class="rule-block">
+        <span class="lbl">Sale Price Trend</span>
+        <div class="sub-lbl">AED per sqft · 6 months</div>
+        <div class="trend-val">↑ 8.5%</div>
+        <div class="trend-cmp">vs 6 months ago</div>
+        <div class="spark">
+          <svg viewBox="0 0 180 48" fill="none">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2E6B47" stop-opacity=".15"/><stop offset="100%" stop-color="#2E6B47" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 40 C30 38 60 33 90 27 S150 15 180 8" stroke="#2E6B47" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/>
+            <path d="M0 40 C30 38 60 33 90 27 S150 15 180 8 L180 48 L0 48Z" fill="url(#g1)"/>
+            <circle cx="180" cy="8" r="2.5" fill="#2E6B47"/>
+          </svg>
+        </div>
+        <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
+        <div class="data-row"><span class="k">Avg. price / sqft</span><span class="v">AED 1,280</span></div>
+      </div>
+      <span class="lbl" style="display:block;margin-bottom:var(--s3)">Market Signals</span>
+      <div class="sigs">
+        <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"Top areas with recent rent drops"</div><div class="sig-d"><span class="dn-c">↓ ~3%</span> last 90 days · From AED 9,500/mo</div></div>
+        <div class="sig"><div class="sig-g">〰</div><div class="sig-t">"Commercial cooling: prices down signals"</div><div class="sig-d">Cap rate <span class="up-c">↑0.8pp</span> · Prices <span class="up-c">↑5%</span></div></div>
+        <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"3 Top Areas for High Rental Yield"</div><div class="sig-d"><span class="up-c">↑</span> Up to 9% yield · From AED 800K</div></div>
+      </div>
+    </div>
+
+    <!-- RENT -->
+    <div class="sb-body hide" id="sb-rent">
+      <div class="rule-block">
+        <span class="lbl">Rent Price Trend</span>
+        <div class="sub-lbl">AED per sqft/yr · 6 months</div>
+        <div class="trend-val gold">↑ 14.1%</div>
+        <div class="trend-cmp">vs 6 months ago</div>
+        <div class="spark">
+          <svg viewBox="0 0 180 48" fill="none">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A87E28" stop-opacity=".15"/><stop offset="100%" stop-color="#A87E28" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#243B55" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/>
+            <path d="M0 44 C30 42 60 36 90 30 S150 14 180 6 L180 48 L0 48Z" fill="url(#g2)"/>
+            <circle cx="180" cy="6" r="2.5" fill="#243B55"/>
+          </svg>
+        </div>
+        <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
+        <div class="data-row"><span class="k">Avg. rent / sqft</span><span class="v">AED 97/yr</span></div>
+        <div class="data-row"><span class="k">YoY change</span><span class="v" style="color:var(--up)">+12.5%</span></div>
+      </div>
+      <span class="lbl" style="display:block;margin-bottom:var(--s3)">Market Signals</span>
+      <div class="sigs">
+        <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"Top areas with recent rent drops"</div><div class="sig-d"><span class="dn-c">↓ ~3%</span> last 90 days</div></div>
+        <div class="sig"><div class="sig-g">〰</div><div class="sig-t">"Commercial cooling: prices down signals"</div><div class="sig-d">Cap rate <span class="up-c">↑0.8pp</span> (90d)</div></div>
+        <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"3 Top Areas for High Rental Yield"</div><div class="sig-d"><span class="up-c">↑</span> Up to 9% yield</div></div>
+      </div>
+    </div>
+
+    <!-- NOISE -->
+    <div class="sb-body hide" id="sb-noise">
+      <div class="rule-block">
+        <span class="lbl">Noise Levels</span>
+        <div class="sub-lbl" style="margin-bottom:var(--s3)">Average decibels by area</div>
+        <div class="noise-pills"><span class="np q">Quiet</span><span class="np m">Mod</span><span class="np l">Loud</span></div>
+        <div class="noise-rows">
+          <div class="nr"><span class="nr-a">Downtown Dubai</span><div class="nr-t"><div class="nr-f l" style="width:88%"></div></div><span class="nr-db">72dB</span></div>
+          <div class="nr"><span class="nr-a">Dubai Marina</span><div class="nr-t"><div class="nr-f m" style="width:82%"></div></div><span class="nr-db">68dB</span></div>
+          <div class="nr"><span class="nr-a">JVC</span><div class="nr-t"><div class="nr-f q" style="width:52%"></div></div><span class="nr-db">45dB</span></div>
+          <div class="nr"><span class="nr-a">Business Bay</span><div class="nr-t"><div class="nr-f m" style="width:78%"></div></div><span class="nr-db">65dB</span></div>
+        </div>
+        <button class="show-more">Show 4 more areas</button>
+        <div class="noise-hl">Quietest: Arabian Ranches (32dB) — ideal for families</div>
+      </div>
+      <span class="lbl" style="display:block;margin-bottom:var(--s3)">Market Signals</span>
+      <div class="sigs">
+        <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"Top areas with recent rent drops"</div><div class="sig-d"><span class="dn-c">↓ ~3%</span> last 90 days</div></div>
+      </div>
+    </div>
+
+    <!-- HIP -->
+    <div class="sb-body hide" id="sb-hip">
+      <div class="rule-block">
+        <span class="lbl">Trending Areas <span style="font-style:normal;letter-spacing:0;text-transform:none;font-size:11px">🔥</span></span>
+        <div class="sub-lbl">Where the action is</div>
+      </div>
+      <div class="trs">
+        <div class="tr"><div class="tr-ico">🎨</div><div class="tr-b"><div class="tr-n">Al Quoz</div><div class="tr-s">Arts &amp; Creative Hub</div></div><div class="tr-m"><span class="tr-p">#1</span><span class="tr-c">+45%</span></div></div>
+        <div class="tr"><div class="tr-ico">🛍</div><div class="tr-b"><div class="tr-n">City Walk</div><div class="tr-s">Urban Lifestyle</div></div><div class="tr-m"><span class="tr-p">#2</span><span class="tr-c">+38%</span></div></div>
+        <div class="tr"><div class="tr-ico">🏖</div><div class="tr-b"><div class="tr-n">Jumeirah Beach Road</div><div class="tr-s">Beach Culture</div></div><div class="tr-m"><span class="tr-p">#3</span><span class="tr-c">+32%</span></div></div>
+        <div class="tr"><div class="tr-ico">✦</div><div class="tr-b"><div class="tr-n">Dubai Design District</div><div class="tr-s">Fashion &amp; Design</div></div><div class="tr-m"><span class="tr-p">#4</span><span class="tr-c">+28%</span></div></div>
+      </div>
+      <p class="hip-note">Based on social activity, new openings &amp; rental demand</p>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero" id="heroView">
+
+      <!-- Left: editorial content -->
+      <div class="hero-l">
+        <span class="hero-tag">Dubai · UAE Real Estate · 2026</span>
+
+        <h1 class="hero-hed">The Smartest<br>Real Estate.<br>Ever.</h1>
+
+        <div class="search-wrap">
+          <div class="search-row">
+            <input class="s-inp" type="text" id="heroInput"
+              placeholder="1 bd in Arabian Ranches"
+              onkeydown="if(event.key==='Enter')launchSearch()">
+            <div class="s-btns">
+              <button class="btn-voice" aria-label="Voice search">
+                <svg width="12" height="16" viewBox="0 0 12 16" fill="none"><rect x="3.5" y="0" width="5" height="10" rx="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 8c0 2.761 2.239 5 5 5s5-2.239 5-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="6" y1="13" x2="6" y2="16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </button>
+              <button class="btn-go" onclick="launchSearch()" aria-label="Search">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12.5 12.5L9 9M11 5.5A5.5 5.5 0 1 1 .5 5.5 5.5 5.5 0 0 1 11 5.5Z" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chips">
+          <button class="chip" onclick="useChip(this)">2 bd under 200,000 AED</button>
+          <button class="chip" onclick="useChip(this)">1 bd under 100,000 AED</button>
+          <button class="chip" onclick="useChip(this)">1 bd sunset view</button>
+          <button class="chip" onclick="useChip(this)">3 bd family</button>
+          <button class="chip" onclick="useChip(this)">3 car garage with backyard</button>
+        </div>
+
+        <div class="mode-tabs">
+          <span class="mode-tab on" onclick="setMode(this)">Sale</span>
+          <span class="mode-tab" onclick="setMode(this)">Rent</span>
+          <span class="mode-tab" onclick="setMode(this)">Noise</span>
+          <span class="mode-tab" onclick="setMode(this)">Hip</span>
+        </div>
+      </div>
+
+      <!-- Market data — full-width section below hero -->
+      <div class="hero-data">
+        <div class="mkt-tabs">
+          <div class="mkt-tab on" onclick="mktTab(this,'ms')">Sale</div>
+          <div class="mkt-tab" onclick="mktTab(this,'mr')">Rent</div>
+          <div class="mkt-tab" onclick="mktTab(this,'mn')">Noise</div>
+          <div class="mkt-tab" onclick="mktTab(this,'mh')">Hip</div>
+        </div>
+
+        <!-- Sale -->
+        <div class="mkt-body" id="ms">
+          <div class="rule-block">
+            <span class="lbl">Sale Price Trend</span>
+            <div class="sub-lbl">AED / sqft · 6 mo</div>
+            <div class="trend-val">↑ 8.5%</div>
+            <div class="trend-cmp">vs 6mo ago</div>
+            <div class="spark">
+              <svg viewBox="0 0 180 48" fill="none"><path d="M0 40 C30 38 60 33 90 27 S150 15 180 8" stroke="#2E6B47" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="8" r="2.5" fill="#2E6B47"/></svg>
+            </div>
+            <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
+            <div class="data-row"><span class="k">Avg. price/sqft</span><span class="v">AED 1,280</span></div>
+          </div>
+          <span class="lbl" style="display:block;margin-bottom:var(--s3)">Market Signals</span>
+          <div class="sigs">
+            <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"Top areas with recent rent drops"</div><div class="sig-d"><span class="dn-c">↓ ~3%</span> last 90 days</div></div>
+            <div class="sig"><div class="sig-g">〰</div><div class="sig-t">"Commercial cooling: prices down signals"</div><div class="sig-d">Cap rate <span class="up-c">↑0.8pp</span></div></div>
+            <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"3 Top Areas for High Rental Yield"</div><div class="sig-d"><span class="up-c">↑</span> Up to 9% yield</div></div>
+          </div>
+        </div>
+
+        <!-- Rent -->
+        <div class="mkt-body hide" id="mr">
+          <div class="rule-block">
+            <span class="lbl">Rent Price Trend</span>
+            <div class="sub-lbl">AED / sqft/yr · 6 mo</div>
+            <div class="trend-val gold">↑ 14.1%</div>
+            <div class="trend-cmp">vs 6mo ago</div>
+            <div class="spark">
+              <svg viewBox="0 0 180 48" fill="none"><path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#243B55" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="6" r="2.5" fill="#243B55"/></svg>
+            </div>
+            <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
+            <div class="data-row"><span class="k">Avg. rent/sqft</span><span class="v">AED 97/yr</span></div>
+            <div class="data-row"><span class="k">YoY</span><span class="v" style="color:var(--navy)">+12.5%</span></div>
+          </div>
+        </div>
+
+        <!-- Noise -->
+        <div class="mkt-body hide" id="mn">
+          <span class="lbl" style="display:block;margin-bottom:var(--s2)">Noise Levels</span>
+          <div class="sub-lbl" style="margin-bottom:var(--s3)">Avg. decibels by area</div>
+          <div class="noise-pills"><span class="np q">Quiet</span><span class="np m">Mod</span><span class="np l">Loud</span></div>
+          <div class="noise-rows">
+            <div class="nr"><span class="nr-a">Downtown Dubai</span><div class="nr-t"><div class="nr-f l" style="width:88%"></div></div><span class="nr-db">72dB</span></div>
+            <div class="nr"><span class="nr-a">Dubai Marina</span><div class="nr-t"><div class="nr-f m" style="width:82%"></div></div><span class="nr-db">68dB</span></div>
+            <div class="nr"><span class="nr-a">JVC</span><div class="nr-t"><div class="nr-f q" style="width:52%"></div></div><span class="nr-db">45dB</span></div>
+            <div class="nr"><span class="nr-a">Business Bay</span><div class="nr-t"><div class="nr-f m" style="width:78%"></div></div><span class="nr-db">65dB</span></div>
+          </div>
+          <div class="noise-hl">Quietest: Arabian Ranches (32dB)</div>
+        </div>
+
+        <!-- Hip -->
+        <div class="mkt-body hide" id="mh">
+          <span class="lbl" style="display:block;margin-bottom:var(--s2)">Trending Areas</span>
+          <div class="trs">
+            <div class="tr"><div class="tr-ico">🎨</div><div class="tr-b"><div class="tr-n">Al Quoz</div><div class="tr-s">Arts &amp; Creative</div></div><div class="tr-m"><span class="tr-p">#1</span><span class="tr-c">+45%</span></div></div>
+            <div class="tr"><div class="tr-ico">🛍</div><div class="tr-b"><div class="tr-n">City Walk</div><div class="tr-s">Urban Lifestyle</div></div><div class="tr-m"><span class="tr-p">#2</span><span class="tr-c">+38%</span></div></div>
+            <div class="tr"><div class="tr-ico">🏖</div><div class="tr-b"><div class="tr-n">Jumeirah Beach</div><div class="tr-s">Beach Culture</div></div><div class="tr-m"><span class="tr-p">#3</span><span class="tr-c">+32%</span></div></div>
+            <div class="tr"><div class="tr-ico">✦</div><div class="tr-b"><div class="tr-n">D3 District</div><div class="tr-s">Fashion &amp; Design</div></div><div class="tr-m"><span class="tr-p">#4</span><span class="tr-c">+28%</span></div></div>
+          </div>
+        </div>
+      </div>
+      </div><!-- /hero-data -->
+    </div><!-- /hero -->
+
+    <!-- MAP VIEW -->
+    <div class="mapview" id="mapView">
+
+      <!-- AI Panel -->
+      <div class="ai-panel">
+        <div class="ai-hd">
+          <div class="ai-title">
+            <span class="ai-nm">Z3 Assistant</span>
+            <span class="ai-badge">AI</span>
+          </div>
+          <button class="btn-icon" style="width:24px;height:24px" aria-label="Expand">
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 2h12M1 5h8M1 8h10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <div class="ai-msgs" id="aiMsgs">
+          <div class="msg-u">hello i am looking for a studio</div>
+          <div class="msg-a">
+            Hey! Great, I'd love to help you find the right studio. What's your budget, and are you thinking Dubai, Abu Dhabi, or Sharjah? Is this for yourself or an investment?
+            <div class="sug-list">
+              <div class="sug" onclick="pickArea('Al Reem Island')">
+                <div class="sug-ico">🏙</div>
+                <div class="sug-b"><div class="sug-n">Al Reem Island</div><div class="sug-d">Modern waterfront living in Abu Dhabi with stunning skyline views...</div></div>
+                <div class="sug-arr"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              </div>
+              <div class="sug" onclick="pickArea('Yas Island')">
+                <div class="sug-ico">🏎</div>
+                <div class="sug-b"><div class="sug-n">Yas Island</div><div class="sug-d">Ferrari World, Yas Mall, F1 circuit. Modern resort living.</div></div>
+                <div class="sug-arr"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              </div>
+              <div class="sug" onclick="pickArea('Saadiyat Island')">
+                <div class="sug-ico">🎭</div>
+                <div class="sug-b"><div class="sug-n">Saadiyat Island</div><div class="sug-d">Louvre Abu Dhabi, beaches, and luxury residences.</div></div>
+                <div class="sug-arr"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              </div>
+            </div>
+            <div class="qrs">
+              <button class="qr" onclick="sendQR(this)">Refine</button>
+              <button class="qr" onclick="sendQR(this)">I have a pet</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-input-area">
+          <div class="ai-inp-row">
+            <input class="ai-inp" id="aiInp" type="text" placeholder="Ask anything..."
+              onkeydown="if(event.key==='Enter')sendMsg()">
+            <button class="btn-mic-s" aria-label="Voice">
+              <svg width="10" height="13" viewBox="0 0 10 13" fill="none"><rect x="2.5" y="0" width="5" height="8.5" rx="2.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 7a4 4 0 008 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="5" y1="11" x2="5" y2="13" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+            </button>
+            <button class="btn-snd" onclick="sendMsg()" aria-label="Send">
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1 8L8 4.5 1 1v2.5l5 1-5 1V8z" fill="white"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="map-wrap">
+        <div id="map"></div>
+
+        <!-- Market insights -->
+        <div class="insights" id="insightsBar">
+          <div class="ins-i">
+            <div class="ins-chart">
+              <svg width="44" height="16" viewBox="0 0 44 16" fill="none"><path d="M2 13 L10 11 L20 12 L30 8 L38 6 L44 9" stroke="#2E6B47" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="ins-lbl">"Price dipped a bit lately"</div>
+            <div class="ins-v up">↑ +2.5% (30d)</div>
+          </div>
+          <div class="ins-i">
+            <div class="ins-chart">
+              <svg width="44" height="16" viewBox="0 0 44 16" fill="none"><path d="M2 6 L10 8 L20 7 L30 11 L38 12 L44 10" stroke="#8C3A3A" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div class="ins-lbl">"Price vs average in the area"</div>
+            <div class="ins-v dn">↓ -3.8% (vs area)</div>
+          </div>
+          <div class="ins-i">
+            <div class="ins-chart">
+              <svg width="24" height="16" viewBox="0 0 24 16" fill="none">
+                <rect x="0" y="7" width="4" height="9" rx=".7" fill="currentColor" opacity=".25"/>
+                <rect x="5.5" y="4" width="4" height="12" rx=".7" fill="currentColor" opacity=".5"/>
+                <rect x="11" y="1" width="4" height="15" rx=".7" fill="currentColor" opacity=".75"/>
+                <rect x="16.5" y="0" width="4" height="16" rx=".7" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="ins-lbl">"Area lively above average"</div>
+            <div class="ins-v hi">High demand</div>
+          </div>
+        </div>
+
+        <!-- Map controls -->
+        <div class="map-ctrl">
+          <button class="map-btn" onclick="mapZoomIn()" aria-label="Zoom in">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+          <button class="map-btn" onclick="mapZoomOut()" aria-label="Zoom out">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 5.5h9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+          <button class="map-btn" onclick="mapCenter()" aria-label="Re-centre">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="1.8" stroke="currentColor" stroke-width="1.1"/><path d="M5.5 1v2M5.5 8v2M1 5.5h2M8 5.5h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </button>
+          <button class="map-btn" id="noiseBtn" onclick="toggleNoise()" aria-label="Toggle noise heatmap" title="Noise heatmap">
+            <svg width="12" height="11" viewBox="0 0 12 11" fill="none"><path d="M1 5.5C2.5 3 4 1 6 1s3.5 2 5 4.5C9.5 8 8 10 6 10S2.5 8 1 5.5z" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.1"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Data panel — right side, hidden when property panel open -->
+      <div class="data-panel" id="dataPanel">
+        <div class="dp-tabs">
+          <div class="dp-tab on" onclick="dpTab(this,'dp-sale')">Sale</div>
+          <div class="dp-tab" onclick="dpTab(this,'dp-rent')">Rent</div>
+          <div class="dp-tab" onclick="dpTab(this,'dp-noise')">Noise</div>
+          <div class="dp-tab" onclick="dpTab(this,'dp-hip')">Hip</div>
+        </div>
+        <!-- Sale -->
+        <div class="dp-body" id="dp-sale">
+          <div class="rule-block">
+            <span class="lbl">Sale Price Trend</span>
+            <div class="sub-lbl">AED / sqft · 6 mo</div>
+            <div class="trend-val" style="color:var(--gold)">↑ 8.5%</div>
+            <div class="trend-cmp">vs 6mo ago</div>
+            <div class="spark"><svg viewBox="0 0 180 48" fill="none"><defs><linearGradient id="dp1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2E8B6A" stop-opacity=".18"/><stop offset="100%" stop-color="#2E8B6A" stop-opacity="0"/></linearGradient></defs><path d="M0 40 C30 38 60 33 90 27 S150 15 180 8" stroke="#2E8B6A" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><path d="M0 40 C30 38 60 33 90 27 S150 15 180 8 L180 48 L0 48Z" fill="url(#dp1)"/><circle cx="180" cy="8" r="2.5" fill="#2E8B6A"/></svg></div>
+            <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
+            <div class="data-row"><span class="k">Avg. price/sqft</span><span class="v">AED 1,280</span></div>
+          </div>
+          <span class="lbl" style="display:block;margin-bottom:var(--s3)">Market Signals</span>
+          <div class="sigs">
+            <div class="sig"><div class="sig-g">⬤⬤</div><div class="sig-t">"Top areas with recent price drops"</div><div class="sig-d"><span class="dn-c">↓ ~3%</span> last 90 days</div></div>
+            <div class="sig"><div class="sig-g">〰</div><div class="sig-t">"3 Top Areas for High Rental Yield"</div><div class="sig-d"><span class="up-c">↑</span> Up to 9% yield</div></div>
+          </div>
+        </div>
+        <!-- Rent -->
+        <div class="dp-body hide" id="dp-rent">
+          <div class="rule-block">
+            <span class="lbl">Rent Price Trend</span>
+            <div class="sub-lbl">AED / sqft/yr · 6 mo</div>
+            <div class="trend-val" style="color:var(--navy)">↑ 14.1%</div>
+            <div class="trend-cmp">vs 6mo ago</div>
+            <div class="spark"><svg viewBox="0 0 180 48" fill="none"><path d="M0 44 C30 42 60 36 90 30 S150 14 180 6" stroke="#243B55" stroke-width="1.4" fill="none" stroke-linecap="round" class="drawp"/><circle cx="180" cy="6" r="2.5" fill="#243B55"/></svg></div>
+            <div class="axis"><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span></div>
+            <div class="data-row"><span class="k">Avg. rent/sqft</span><span class="v">AED 97/yr</span></div>
+            <div class="data-row"><span class="k">YoY</span><span class="v" style="color:var(--navy)">+12.5%</span></div>
+          </div>
+        </div>
+        <!-- Noise -->
+        <div class="dp-body hide" id="dp-noise">
+          <span class="lbl" style="display:block;margin-bottom:var(--s2)">Noise Levels</span>
+          <div class="noise-pills"><span class="np q">Quiet</span><span class="np m">Mod</span><span class="np l">Loud</span></div>
+          <div class="noise-rows">
+            <div class="nr"><span class="nr-a">Downtown Dubai</span><div class="nr-t"><div class="nr-f l" style="width:88%"></div></div><span class="nr-db">72dB</span></div>
+            <div class="nr"><span class="nr-a">Dubai Marina</span><div class="nr-t"><div class="nr-f m" style="width:82%"></div></div><span class="nr-db">68dB</span></div>
+            <div class="nr"><span class="nr-a">JVC</span><div class="nr-t"><div class="nr-f q" style="width:52%"></div></div><span class="nr-db">45dB</span></div>
+            <div class="nr"><span class="nr-a">Business Bay</span><div class="nr-t"><div class="nr-f m" style="width:78%"></div></div><span class="nr-db">65dB</span></div>
+          </div>
+          <div class="noise-hl">Quietest: Arabian Ranches (32dB)</div>
+        </div>
+        <!-- Hip -->
+        <div class="dp-body hide" id="dp-hip">
+          <span class="lbl" style="display:block;margin-bottom:var(--s2)">Trending Areas</span>
+          <div class="trs">
+            <div class="tr"><div class="tr-ico">🎨</div><div class="tr-b"><div class="tr-n">Al Quoz</div><div class="tr-s">Arts &amp; Creative</div></div><div class="tr-m"><span class="tr-p">#1</span><span class="tr-c">+45%</span></div></div>
+            <div class="tr"><div class="tr-ico">🛍</div><div class="tr-b"><div class="tr-n">City Walk</div><div class="tr-s">Urban Lifestyle</div></div><div class="tr-m"><span class="tr-p">#2</span><span class="tr-c">+38%</span></div></div>
+            <div class="tr"><div class="tr-ico">🏖</div><div class="tr-b"><div class="tr-n">Jumeirah Beach</div><div class="tr-s">Beach Culture</div></div><div class="tr-m"><span class="tr-p">#3</span><span class="tr-c">+32%</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property panel — slides over data panel -->
+      <div class="prop-panel buy-accent" id="propPanel">
+        <div class="prop-img">
+          <button class="btn-close-prop" onclick="closePropPanel()" aria-label="Close">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+          <img class="prop-photo"
+            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=640&q=80&auto=format&fit=crop"
+            alt="Jumeirah 2BR Sea View"
+            loading="lazy">
+          <div class="prop-img-overlay"></div>
+          <button class="btn-fav" aria-label="Save">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 9.5S1 6.5 1 3.8a2.5 2.5 0 015.5.7 2.5 2.5 0 015.5-.7C12 6.5 5.5 9.5 5.5 9.5z" stroke="currentColor" stroke-width="1.1"/></svg>
+          </button>
+        </div>
+
+        <div class="prop-body">
+          <div class="prop-name">Jumeirah 2BR Sea View</div>
+          <div class="prop-sub">Apartment · Jumeirah, Dubai</div>
+          <div class="prop-stats">
+            <div class="ps">
+              <svg width="11" height="10" viewBox="0 0 11 10" fill="none"><rect x="1" y="4" width="9" height="5" rx="1" stroke="currentColor" stroke-width="1"/><path d="M1 6.5V3a1 1 0 011-1h2V6" stroke="currentColor" stroke-width="1"/><path d="M5.5 5.5V4a1 1 0 011-1h2a1 1 0 011 1v1.5" stroke="currentColor" stroke-width="1"/></svg>2 Bed
+            </div>
+            <div class="ps">
+              <svg width="11" height="10" viewBox="0 0 11 10" fill="none"><rect x="1" y="2.5" width="9" height="6" rx="1.5" stroke="currentColor" stroke-width="1"/><path d="M4 8.5V6H1" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>2 Bath
+            </div>
+            <div class="ps">
+              <svg width="11" height="10" viewBox="0 0 11 10" fill="none"><rect x="1" y="1" width="9" height="8" rx="1" stroke="currentColor" stroke-width="1"/><path d="M1 4.5h9M5 1v8" stroke="currentColor" stroke-width=".8"/></svg>1,350 sqft
+            </div>
+          </div>
+          <div class="prop-price">AED 15,000<span>/mo</span></div>
+          <div class="prop-meta">Built 2019 &nbsp;·&nbsp; Floor 14 &nbsp;·&nbsp; Sea View</div>
+          <p class="prop-desc">Premium 2-bedroom apartment with panoramic sea views and direct beach access. Steps from La Mer beach and City Walk dining. Modern finishes throughout.</p>
+          <div class="prop-tags">
+            <span class="prop-tag">Pet-friendly</span>
+            <span class="prop-tag">Parking</span>
+            <span class="prop-tag">Gym</span>
+            <span class="prop-tag">Pool</span>
+            <span class="prop-tag">Sea View</span>
+          </div>
+        </div>
+
+        <div class="prop-actions">
+          <button class="btn-cta">Contact Broker</button>
+          <button class="btn-sec">Ask AI</button>
+        </div>
+      </div>
+
+    </div><!-- /mapview -->
+  </main>
+</div><!-- /app -->
+
+<!-- PROPERTY MANAGEMENT VIEW -->
+<div id="mgmtView">
+  <div class="mgmt-wrap">
+    <div class="mgmt-hed">List a Property</div>
+    <p class="mgmt-sub">Add your property to Z3's marketplace — buyers and renters find it instantly.</p>
+    <div class="mgmt-card">
+
+      <div class="mgmt-section">
+        <div class="mgmt-section-title">Listing Type</div>
+        <div class="mgmt-type-toggle">
+          <button class="type-btn on-buy" onclick="mgmtType(this,'buy')">For Sale</button>
+          <button class="type-btn" onclick="mgmtType(this,'rent')">For Rent</button>
+        </div>
+      </div>
+
+      <div class="mgmt-section">
+        <div class="mgmt-section-title">Property Details</div>
+        <div class="mgmt-grid">
+          <div class="mgmt-field full">
+            <label class="mgmt-label">Address</label>
+            <input class="mgmt-input" type="text" placeholder="e.g. Marina Gate, Dubai Marina">
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Area / Community</label>
+            <select class="mgmt-select">
+              <option>Dubai Marina</option>
+              <option>Downtown Dubai</option>
+              <option>Jumeirah</option>
+              <option>Business Bay</option>
+              <option>JVC</option>
+              <option>Arabian Ranches</option>
+              <option>Palm Jumeirah</option>
+              <option>DIFC</option>
+            </select>
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Property Type</label>
+            <select class="mgmt-select">
+              <option>Apartment</option>
+              <option>Villa</option>
+              <option>Townhouse</option>
+              <option>Penthouse</option>
+              <option>Studio</option>
+              <option>Office</option>
+            </select>
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Bedrooms</label>
+            <input class="mgmt-input" type="number" placeholder="2" min="0" max="20">
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Bathrooms</label>
+            <input class="mgmt-input" type="number" placeholder="2" min="1" max="20">
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Size (sqft)</label>
+            <input class="mgmt-input" type="number" placeholder="1350">
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Year Built</label>
+            <input class="mgmt-input" type="number" placeholder="2019" min="1950" max="2026">
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Price (AED)</label>
+            <input class="mgmt-input" type="number" placeholder="1,500,000">
+          </div>
+          <div class="mgmt-field">
+            <label class="mgmt-label">Floor</label>
+            <input class="mgmt-input" type="number" placeholder="14" min="0">
+          </div>
+          <div class="mgmt-field full">
+            <label class="mgmt-label">Description</label>
+            <textarea class="mgmt-textarea" placeholder="Describe the property — views, finishes, lifestyle..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="mgmt-section">
+        <div class="mgmt-section-title">Amenities</div>
+        <div class="amenity-grid">
+          <label class="amenity-cb"><input type="checkbox" checked><span>Gym</span></label>
+          <label class="amenity-cb"><input type="checkbox" checked><span>Pool</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Parking</span></label>
+          <label class="amenity-cb"><input type="checkbox" checked><span>Pet-friendly</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Sea View</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Balcony</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Concierge</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Smart Home</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Maid's Room</span></label>
+          <label class="amenity-cb"><input type="checkbox"><span>Storage</span></label>
+        </div>
+      </div>
+
+      <div class="mgmt-section">
+        <div class="mgmt-section-title">Photos</div>
+        <div class="photo-drop" onclick="document.getElementById('photoInput').click()">
+          <div class="photo-drop-ico">🖼</div>
+          <div class="photo-drop-txt">Drop photos here or click to upload<br><span style="font-size:10px;opacity:.6">JPG, PNG up to 10MB each</span></div>
+          <input type="file" id="photoInput" multiple accept="image/*">
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="submitListing()">Publish Listing</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN IN MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModalClick(event)">
+  <div class="modal">
+    <div class="modal-hed">Sign in</div>
+    <div class="auth-rows">
+      <button class="auth-btn off" disabled>
+        <svg width="16" height="11" viewBox="0 0 16 11"><rect width="16" height="3.7" fill="#EF4A29"/><rect y="3.7" width="16" height="3.7" fill="white"/><rect y="7.4" width="16" height="3.6" fill="#007A3D"/></svg>
+        Sign in with UAE Pass
+        <span class="soon-lbl">(Coming soon)</span>
+      </button>
+      <button class="auth-btn">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2a10.3 10.3 0 00-.164-1.84H9v3.48h4.844a4.14 4.14 0 01-1.796 2.716v2.258h2.908C16.658 14.336 17.64 11.92 17.64 9.2z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.71H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.712A5.41 5.41 0 013.682 9c0-.596.102-1.174.282-1.712V4.956H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.044l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.956l3.007 2.332C4.672 5.162 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+        Sign in with Google
+      </button>
+      <button class="auth-btn">
+        <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><rect x="1" y="1" width="13" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 3l6.5 4.5L14 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Sign in with Email
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ══ MAPBOX ══
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGllcm9ueW1vdXMiLCJhIjoiY21tMWdiNzQ2MDg4dDJ2c2RrYmZzdDRtMCJ9.tlwuZMnu7c0DiUHW9zNKAg';
+const LIGHT = 'mapbox://styles/mapbox/light-v11';
+const DARK  = 'mapbox://styles/mapbox/dark-v11';
+let map = null, dark = false, activePin = null, activePopup = null, noiseOn = false;
+
+const NOISE_ZONES = {
+  type: 'FeatureCollection',
+  features: [
+    { type: 'Feature', properties: { area: 'Downtown Dubai', db: 72 },
+      geometry: { type: 'Polygon', coordinates: [[[55.27,25.19],[55.30,25.19],[55.30,25.21],[55.27,25.21],[55.27,25.19]]] }},
+    { type: 'Feature', properties: { area: 'Dubai Marina', db: 68 },
+      geometry: { type: 'Polygon', coordinates: [[[55.12,25.07],[55.16,25.07],[55.16,25.10],[55.12,25.10],[55.12,25.07]]] }},
+    { type: 'Feature', properties: { area: 'JVC', db: 45 },
+      geometry: { type: 'Polygon', coordinates: [[[55.19,25.04],[55.22,25.04],[55.22,25.07],[55.19,25.07],[55.19,25.04]]] }},
+    { type: 'Feature', properties: { area: 'Business Bay', db: 65 },
+      geometry: { type: 'Polygon', coordinates: [[[55.25,25.17],[55.29,25.17],[55.29,25.19],[55.25,25.19],[55.25,25.17]]] }},
+    { type: 'Feature', properties: { area: 'Arabian Ranches', db: 32 },
+      geometry: { type: 'Polygon', coordinates: [[[55.25,24.99],[55.31,24.99],[55.31,25.03],[55.25,25.03],[55.25,24.99]]] }},
+  ]
+};
+
+const PINS = [
+  { lng:55.134, lat:25.078, n:'35K', s:'2m²' },
+  { lng:55.183, lat:25.098, n:'19K', s:'1m²' },
+  { lng:55.218, lat:25.112, n:'15K', s:'1m²' },
+  { lng:55.258, lat:25.198, n:'14K', s:'0m²' },
+  { lng:55.301, lat:25.252, n:'2K',  s:'0m²' },
+  { lng:55.352, lat:25.274, n:'5K',  s:'0m²' },
+  { lng:55.320, lat:25.222, n:'4K',  s:'0m²' },
+  { lng:55.205, lat:25.115, n:'15K', s:'1m²' },
+  { lng:55.242, lat:25.155, n:'6K',  s:'0m²' },
+  { lng:55.280, lat:25.133, n:'9K',  s:'0m²' },
+  { lng:55.160, lat:25.092, n:'6K',  s:'0m²' },
+  { lng:55.263, lat:25.108, n:'38K', s:'2m²' },
+  { lng:55.347, lat:25.115, n:'4K',  s:'0m²' },
+  { lng:55.117, lat:25.058, n:'11K', s:'0m²' },
+];
+
+function initMap() {
+  map = new mapboxgl.Map({
+    container: 'map',
+    style: LIGHT,
+    center: [55.2708, 25.1900],
+    zoom: 10.5,
+    attributionControl: false,
+  });
+  map.on('load', () => {
+    PINS.forEach(addPin);
+    addNoiseLayers();
+  });
+}
+
+function addNoiseLayers() {
+  if (!map) return;
+  if (!map.getSource('noise')) {
+    map.addSource('noise', { type: 'geojson', data: NOISE_ZONES });
+  }
+  if (!map.getLayer('noise-fill')) {
+    map.addLayer({
+      id: 'noise-fill',
+      type: 'fill',
+      source: 'noise',
+      layout: { visibility: 'none' },
+      paint: {
+        'fill-color': [
+          'interpolate', ['linear'], ['get', 'db'],
+          32, '#2E6B47',
+          55, '#C4A040',
+          72, '#8C3A3A',
+        ],
+        'fill-opacity': 0.28,
+      }
+    });
+    map.addLayer({
+      id: 'noise-line',
+      type: 'line',
+      source: 'noise',
+      layout: { visibility: 'none' },
+      paint: { 'line-color': 'rgba(0,0,0,.15)', 'line-width': 1 }
+    });
+  }
+  // restore visibility if noise was on before style switch
+  if (noiseOn) {
+    ['noise-fill','noise-line'].forEach(id => {
+      if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'visible');
+    });
+  }
+}
+
+function toggleNoise() {
+  noiseOn = !noiseOn;
+  const v = noiseOn ? 'visible' : 'none';
+  ['noise-fill','noise-line'].forEach(id => {
+    if (map && map.getLayer(id)) map.setLayoutProperty(id, 'visibility', v);
+  });
+  document.getElementById('noiseBtn').classList.toggle('active', noiseOn);
+}
+
+function addPin(p) {
+  const el = document.createElement('div');
+  el.className = 'z3-pin';
+  el.innerHTML = `<span class="z3-pin-n">${p.n}</span><span class="z3-pin-s">${p.s}</span>`;
+  el.addEventListener('click', () => {
+    if (activePin) activePin.classList.remove('sel');
+    el.classList.add('sel');
+    activePin = el;
+
+    if (activePopup) activePopup.remove();
+    activePopup = new mapboxgl.Popup({
+      offset: [0, -10],
+      closeButton: false,
+      className: 'z3-popup',
+      maxWidth: '240px',
+    })
+    .setLngLat([p.lng, p.lat])
+    .setHTML(`
+      <div class="popup-inner">
+        <div class="popup-label">${p.label ?? p.n} listings</div>
+        <div class="popup-count">${p.n} active</div>
+        <div class="popup-price">From AED 8,500<span>/mo</span></div>
+        <button class="popup-cta" onclick="showMapResults()">View listings →</button>
+      </div>
+    `)
+    .addTo(map);
+  });
+  new mapboxgl.Marker({ element: el, anchor: 'center' }).setLngLat([p.lng, p.lat]).addTo(map);
+}
+
+function showMapResults() {
+  if (activePopup) { activePopup.remove(); activePopup = null; }
+  document.getElementById('propPanel').classList.add('open');
+}
+function closePropPanel() {
+  document.getElementById('propPanel').classList.remove('open');
+  if (activePin) { activePin.classList.remove('sel'); activePin = null; }
+}
+
+function mapZoomIn()  { map?.zoomIn({ duration: 300 }); }
+function mapZoomOut() { map?.zoomOut({ duration: 300 }); }
+function mapCenter()  { map?.flyTo({ center: [55.2708, 25.19], zoom: 10.5, duration: 800 }); }
+
+function toggleDark() {
+  dark = !dark;
+  document.documentElement.dataset.theme = dark ? 'dark' : '';
+  map?.setStyle(dark ? DARK : LIGHT);
+  map?.once('styledata', () => {
+    PINS.forEach(addPin);
+    addNoiseLayers();
+  });
+}
+
+// ══ VIEWS ══
+function setNavOn(id) {
+  ['navHome','navSearch','navMgmt'].forEach(n => document.getElementById(n).classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+function showHero() {
+  document.getElementById('heroView').classList.remove('hide');
+  document.getElementById('mapView').classList.remove('on');
+  document.getElementById('mgmtView').classList.remove('on');
+  document.querySelector('.app').classList.add('hero-active');
+  setNavOn('navHome');
+  closeSidebar();
+}
+function launchSearch() {
+  document.getElementById('heroView').classList.add('hide');
+  document.getElementById('mapView').classList.add('on');
+  document.getElementById('mgmtView').classList.remove('on');
+  document.querySelector('.app').classList.remove('hero-active');
+  setNavOn('navSearch');
+  closeSidebar();
+  if (!map) requestAnimationFrame(initMap);
+}
+function showMgmt() {
+  document.getElementById('heroView').classList.add('hide');
+  document.getElementById('mapView').classList.remove('on');
+  document.getElementById('mgmtView').classList.add('on');
+  document.querySelector('.app').classList.remove('hero-active');
+  setNavOn('navMgmt');
+  closeSidebar();
+}
+
+// ══ TABS ══
+function sbTab(el, id) {
+  document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  ['sale','rent','noise','hip'].forEach(k =>
+    document.getElementById('sb-' + k).classList.toggle('hide', k !== id));
+}
+function mktTab(el, id) {
+  document.querySelectorAll('.mkt-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  ['ms','mr','mn','mh'].forEach(k =>
+    document.getElementById(k).classList.toggle('hide', k !== id));
+}
+function dpTab(el, id) {
+  document.querySelectorAll('.dp-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  ['dp-sale','dp-rent','dp-noise','dp-hip'].forEach(k =>
+    document.getElementById(k).classList.toggle('hide', k !== id));
+}
+function setMode(el) {
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// ══ SEARCH CHIPS ══
+function useChip(el) {
+  document.getElementById('heroInput').value = el.textContent.trim();
+  launchSearch();
+}
+
+// ══ AI CHAT ══
+function pickArea(name) {
+  addU('Tell me more about ' + name);
+  setTimeout(() => addA(`${name} shows strong fundamentals — consistent demand and 8–14% appreciation YoY. Want me to pull current listings?`), 600);
+}
+function sendQR(el) {
+  addU(el.textContent);
+  setTimeout(() => addA("Got it — I've refined your search. The map now highlights the best matches."), 600);
+}
+function sendMsg() {
+  const i = document.getElementById('aiInp');
+  const v = i.value.trim(); if (!v) return;
+  addU(v); i.value = '';
+  setTimeout(() => addA(aiReply(v)), 680);
+}
+function addU(t) {
+  const c = document.getElementById('aiMsgs');
+  const d = document.createElement('div');
+  d.className = 'msg-u'; d.textContent = t;
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+function addA(t) {
+  const c = document.getElementById('aiMsgs');
+  const d = document.createElement('div');
+  d.className = 'msg-a'; d.textContent = t;
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+function aiReply(q) {
+  const r = q.toLowerCase();
+  if (/price|aed|cost/.test(r))   return "Average sale prices are AED 1,280/sqft. Jumeirah and Downtown command premiums; JVC and Al Quoz offer strong value per sqft.";
+  if (/rent|studio/.test(r))      return "Studios: AED 35,000–85,000/yr. JVC and Al Quoz for value, Marina and Downtown for premium. Want me to filter by budget?";
+  if (/invest|yield/.test(r))     return "Top yields: Al Quoz (9%), JVC (7–8%), Business Bay (6–7%). Strong market with 14.1% YoY rent growth.";
+  if (/quiet|noise/.test(r))      return "Quietest: Arabian Ranches (32dB), Al Barsha South (38dB), JVC (45dB). All ideal for families.";
+  if (/hip|trend|art/.test(r))    return "Trendiest right now: Al Quoz (+45%), City Walk (+38%), Jumeirah Beach Road (+32%). All seeing new openings and social activity.";
+  return "I've updated the map with options matching your criteria. Sort by price, proximity, or rental yield?";
+}
+
+// ══ PROPERTY MGMT ══
+function mgmtType(btn, type) {
+  document.querySelectorAll('.type-btn').forEach(b => b.className = 'type-btn');
+  btn.classList.add(type === 'buy' ? 'on-buy' : 'on-rent');
+}
+function submitListing() {
+  alert('Listing submitted! Our team will review within 24 hours.');
+}
+
+// ══ SIDEBAR ══
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('mobBg').classList.toggle('on');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mobBg').classList.remove('on');
+}
+
+// ══ MODAL ══
+function openModal() { document.getElementById('modalBg').classList.add('on'); }
+function closeModalClick(e) {
+  if (e.target === document.getElementById('modalBg'))
+    document.getElementById('modalBg').classList.remove('on');
+}
+document.addEventListener('keydown', e =>
+  e.key === 'Escape' && document.getElementById('modalBg').classList.remove('on'));
+
+// ══ PARALLAX HEADLINE ══
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const heroL = document.querySelector('.hero-l');
+  const heroHed = document.querySelector('.hero-hed');
+  if (heroL && heroHed) {
+    heroL.addEventListener('mousemove', (e) => {
+      const rect = heroL.getBoundingClientRect();
+      const cx = (e.clientX - rect.left) / rect.width - 0.5;
+      const cy = (e.clientY - rect.top) / rect.height - 0.5;
+      heroHed.style.transform = `translate(${cx * 12}px, ${cy * 8}px)`;
+      heroHed.style.transition = 'transform .1s ease';
+    });
+    heroL.addEventListener('mouseleave', () => {
+      heroHed.style.transform = 'none';
+      heroHed.style.transition = 'transform .6s ease';
+    });
+  }
+}
+
+// ══ COUNTER ANIMATION ══
+function animateCounter(el, target, suffix = '%', duration = 1000) {
+  const start = performance.now();
+  const update = (now) => {
+    const t = Math.min((now - start) / duration, 1);
+    const val = (t * parseFloat(target)).toFixed(1);
+    el.textContent = `↑ ${val}${suffix}`;
+    if (t < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+// ══ MAKE ALL SIGNALS VISIBLE ON LOAD ══
+document.querySelectorAll('.sig, .tr').forEach(el => el.classList.add('visible'));
+
+// ══ INIT ══
+document.querySelector('.app').classList.add('hero-active');
+
+</script>
+</body>
+</html>

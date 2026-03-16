@@ -16,21 +16,31 @@ interface MapPanelProps {
 const DUBAI_CENTER = { longitude: 55.2708, latitude: 25.2048, zoom: 11 };
 const MAPBOX_TOKEN  = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
+// Mode-specific glow colors
+const GLOW = {
+  buy:  { light: "rgba(201,162,88,",  dark: "rgba(165,255,214," },
+  rent: { light: "rgba(196,118,80,",  dark: "rgba(169,109,163," },
+};
+
 export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" }: MapPanelProps) {
   const { theme } = useTheme();
-  const [hoveredId,      setHoveredId]      = useState<string | null>(null);
-  const [popupProperty,  setPopupProperty]  = useState<Property | null>(null);
+  const [hoveredId,     setHoveredId]     = useState<string | null>(null);
+  const [popupProperty, setPopupProperty] = useState<Property | null>(null);
+  const [mapLoaded,     setMapLoaded]     = useState(false);
+  const [mapError,      setMapError]      = useState(false);
 
   const mapStyle = theme === "dark"
     ? "mapbox://styles/mapbox/dark-v11"
-    : "mapbox://styles/mapbox/light-v11";
+    : "mapbox://styles/mapbox/streets-v12";
 
   const handleMarkerClick = useCallback((property: Property) => {
     setPopupProperty(property);
     onMarkerClick?.(property.id);
   }, [onMarkerClick]);
 
-  if (!MAPBOX_TOKEN) {
+  const glowBase = GLOW[mode][theme === "dark" ? "dark" : "light"];
+
+  if (!MAPBOX_TOKEN || mapError) {
     return <FallbackMap properties={properties} mode={mode} onMarkerClick={onMarkerClick} />;
   }
 
@@ -38,12 +48,33 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
 
   return (
     <div className="map-container">
+      {/* Loading skeleton */}
+      {!mapLoaded && (
+        <div
+          className="absolute inset-0 z-10 flex items-center justify-center"
+          style={{ background: theme === "dark" ? "#12130F" : "#EDE8E0" }}
+        >
+          <div className="flex flex-col items-center gap-3">
+            <div
+              className="w-8 h-8 rounded-full border-2 animate-spin"
+              style={{
+                borderColor: 'rgba(201,162,88,0.20)',
+                borderTopColor: '#C9A258',
+              }}
+            />
+            <span className="type-body-sm">Loading map…</span>
+          </div>
+        </div>
+      )}
+
       <Map
         mapboxAccessToken={MAPBOX_TOKEN}
         initialViewState={DUBAI_CENTER}
         style={{ width: "100%", height: "100%" }}
         mapStyle={mapStyle}
         reuseMaps
+        onLoad={() => setMapLoaded(true)}
+        onError={() => setMapError(true)}
       >
         <NavigationControl position="top-right" />
 
@@ -51,7 +82,7 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
           const isHovered = hoveredId === property.id;
           return (
             <Marker
-              key={property.id}
+              key={`${property.id}-${mode}`}
               longitude={property.lng}
               latitude={property.lat}
               anchor="bottom"
@@ -69,8 +100,8 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
                   style={{
                     inset: isHovered ? "-14px" : "-6px",
                     background: isHovered
-                      ? `radial-gradient(circle, ${mode === "buy" ? "rgba(165,255,214,0.55)" : "rgba(169,109,163,0.55)"} 0%, transparent 70%)`
-                      : `radial-gradient(circle, ${mode === "buy" ? "rgba(165,255,214,0.18)" : "rgba(169,109,163,0.18)"} 0%, transparent 70%)`,
+                      ? `radial-gradient(circle, ${glowBase}0.55) 0%, transparent 70%)`
+                      : `radial-gradient(circle, ${glowBase}0.18) 0%, transparent 70%)`,
                     transition: "all 0.25s ease",
                   }}
                 />
@@ -82,7 +113,8 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
                     width:     isHovered ? 44 : 36,
                     height:    isHovered ? 44 : 36,
                     transform: isHovered ? "scale(1.15)" : "scale(1)",
-                    borderColor: isHovered ? "rgba(238,229,233,0.3)" : "rgba(238,229,233,0.12)",
+                    borderColor: isHovered ? "rgba(30,22,10,0.25)" : undefined,
+                    transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
                   }}
                 >
                   {property.beds}bd
@@ -108,7 +140,7 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
               <p className="type-label mb-1" style={{ fontSize: 13, lineHeight: 1.3 }}>
                 {popupProperty.title.length > 40 ? popupProperty.title.slice(0, 40) + "…" : popupProperty.title}
               </p>
-              <p className="text-[15px] font-bold" style={{ color: mode === "buy" ? "#A5FFD6" : "#A96DA3" }}>
+              <p className="text-[15px] font-bold" style={{ color: mode === "buy" ? "var(--color-z3-accent)" : "var(--color-z3-mauve)" }}>
                 {popupProperty.priceShort}
               </p>
               <p className="type-body-sm mt-1">
@@ -122,7 +154,7 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
       {/* ── Bottom info bar ── */}
       <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
         <div className="map-info-bar pointer-events-auto">
-          <MapPin className="w-3 h-3" style={{ color: "#A5FFD6" }} />
+          <MapPin className="w-3 h-3" style={{ color: "var(--color-z3-accent)" }} />
           Dubai, UAE
         </div>
         <div className="map-info-bar text-[10px]">
@@ -133,7 +165,7 @@ export default function MapPanel({ onMarkerClick, properties = [], mode = "buy" 
   );
 }
 
-/* ── Fallback map (no Mapbox token) ── */
+/* ── Fallback map (no Mapbox token or error) ── */
 function FallbackMap({ properties, mode, onMarkerClick }: {
   properties: Property[];
   mode: string;
@@ -188,8 +220,8 @@ function FallbackMap({ properties, mode, onMarkerClick }: {
                 className="absolute rounded-full animate-ping"
                 style={{
                   inset: "-8px",
-                  background: mode === "buy" ? "rgba(165,255,214,0.12)" : "rgba(169,109,163,0.12)",
-                  border: `1px solid ${mode === "buy" ? "rgba(165,255,214,0.25)" : "rgba(169,109,163,0.25)"}`,
+                  background: mode === "buy" ? "rgba(201,162,88,0.12)" : "rgba(196,118,80,0.12)",
+                  border: `1px solid ${mode === "buy" ? "rgba(201,162,88,0.25)" : "rgba(196,118,80,0.25)"}`,
                 }}
               />
             )}
@@ -200,8 +232,8 @@ function FallbackMap({ properties, mode, onMarkerClick }: {
               style={{
                 inset: isHovered ? "-12px" : "-5px",
                 background: isHovered
-                  ? `radial-gradient(circle, ${mode === "buy" ? "rgba(165,255,214,0.32)" : "rgba(169,109,163,0.32)"} 0%, transparent 70%)`
-                  : `radial-gradient(circle, ${mode === "buy" ? "rgba(165,255,214,0.14)" : "rgba(169,109,163,0.14)"} 0%, transparent 70%)`,
+                  ? `radial-gradient(circle, ${mode === "buy" ? "rgba(201,162,88,0.32)" : "rgba(196,118,80,0.32)"} 0%, transparent 70%)`
+                  : `radial-gradient(circle, ${mode === "buy" ? "rgba(201,162,88,0.14)" : "rgba(196,118,80,0.14)"} 0%, transparent 70%)`,
               }}
             />
 
@@ -216,8 +248,8 @@ function FallbackMap({ properties, mode, onMarkerClick }: {
             {isHovered && (
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2.5 whitespace-nowrap z-10">
                 <div className="map-popup py-2 px-3 text-xs">
-                  <span className="font-semibold text-z3-text">{property.area}</span>
-                  <span className="text-z3-text-muted ml-1.5">{property.priceShort}</span>
+                  <span className="font-semibold" style={{ color: 'var(--color-z3-text)' }}>{property.area}</span>
+                  <span className="type-body-sm ml-1.5">{property.priceShort}</span>
                 </div>
               </div>
             )}
@@ -225,18 +257,10 @@ function FallbackMap({ properties, mode, onMarkerClick }: {
         );
       })}
 
-      {/* No-token notice */}
-      <div className="absolute top-4 left-4">
-        <div className="map-info-bar text-[10px]">
-          <Layers className="w-3 h-3" />
-          Add NEXT_PUBLIC_MAPBOX_TOKEN for live map
-        </div>
-      </div>
-
       {/* Bottom info bar */}
       <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
         <div className="map-info-bar">
-          <MapPin className="w-3 h-3" style={{ color: "#A5FFD6" }} />
+          <MapPin className="w-3 h-3" style={{ color: "var(--color-z3-accent)" }} />
           Dubai, UAE
         </div>
         <div className="map-info-bar text-[10px]">

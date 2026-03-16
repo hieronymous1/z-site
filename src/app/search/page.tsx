@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { Map as MapIcon, Sparkles, Home } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import MarketSidebar from "@/components/MarketSidebar";
 import AIChatPanel from "@/components/AIChatPanel";
@@ -33,8 +34,8 @@ function SearchContent() {
   const buyActive = mode === "buy";
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden pb-[56px] lg:pb-0" style={{ background: 'var(--color-z3-bg)', fontFamily: 'var(--font-sans)' }}>
-      {/* Ambient orbs */}
+    <div className="h-screen flex flex-col overflow-hidden pb-[56px] md:pb-0" style={{ background: 'var(--color-z3-bg)', fontFamily: 'var(--font-sans)' }}>
+      {/* Ambient orbs — overflow-hidden prevents bleed on small viewports */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute top-0 right-1/3 w-[480px] h-[480px] rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(165,255,214,0.06) 0%, transparent 70%)', filter: 'blur(80px)' }} />
@@ -67,8 +68,8 @@ function SearchContent() {
 
       {/* Main 3-column layout */}
       <div className="flex-1 flex pt-[88px] overflow-hidden">
-        {/* Far left — AI Chat (desktop only) */}
-        <aside className="hidden lg:flex w-[300px] shrink-0">
+        {/* Far left — AI Chat (tablet: 240px, desktop: 300px) */}
+        <aside className="hidden md:flex md:w-[240px] lg:w-[300px] shrink-0">
           <AIChatPanel mode={mode} />
         </aside>
 
@@ -81,7 +82,7 @@ function SearchContent() {
           />
         </main>
 
-        {/* Far right — Market Sidebar (desktop only, hidden when property panel open) */}
+        {/* Far right — Market Sidebar (desktop only) */}
         <aside
           className="hidden lg:flex w-[280px] shrink-0 transition-all duration-300"
           style={{
@@ -94,25 +95,38 @@ function SearchContent() {
         </aside>
       </div>
 
-      {/* Mobile bottom bar — quick access to AI + market data */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex border-t"
-        style={{ background: 'rgba(18,19,15,0.92)', backdropFilter: 'blur(20px)', borderColor: 'rgba(238,229,233,0.08)' }}>
-        <a href={`/search?mode=${mode}`}
-          className="flex-1 flex flex-col items-center gap-1 py-3 text-xs transition-colors"
-          style={{ color: 'var(--color-z3-text-secondary)' }}>
-          <span style={{ fontSize: 16 }}>🗺</span>
+      {/* Mobile bottom bar — quick access to AI + map + home */}
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-30 flex border-t"
+        style={{
+          background: 'var(--color-z3-bg)',
+          backdropFilter: 'blur(20px)',
+          borderColor: 'var(--color-z3-border)',
+          minHeight: 56,
+        }}
+      >
+        <a
+          href={`/search?mode=${mode}`}
+          className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs transition-colors"
+          style={{ color: 'var(--color-z3-accent)' }}
+        >
+          <MapIcon className="w-4 h-4" />
           Map
         </a>
-        <button onClick={() => setPropertyOpen(false)}
-          className="flex-1 flex flex-col items-center gap-1 py-3 text-xs transition-colors"
-          style={{ color: 'var(--color-z3-text-secondary)' }}>
-          <span style={{ fontSize: 16 }}>✦</span>
+        <button
+          onClick={() => setPropertyOpen(false)}
+          className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs transition-colors"
+          style={{ color: 'var(--color-z3-text-secondary)' }}
+        >
+          <Sparkles className="w-4 h-4" />
           AI
         </button>
-        <a href="/"
-          className="flex-1 flex flex-col items-center gap-1 py-3 text-xs"
-          style={{ color: 'var(--color-z3-text-secondary)' }}>
-          <span style={{ fontSize: 16 }}>⌂</span>
+        <a
+          href="/"
+          className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs"
+          style={{ color: 'var(--color-z3-text-secondary)' }}
+        >
+          <Home className="w-4 h-4" />
           Home
         </a>
       </nav>

@@ -12,7 +12,7 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="mx-auto max-w-[1800px] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1800px]" style={{ paddingLeft: 'var(--page-gutter)', paddingRight: 'var(--page-gutter)' }}>
         <div className="flex h-16 items-center justify-between">
 
           {/* ── Logo ── */}
@@ -39,7 +39,7 @@ export default function Navbar() {
               </button>
               <span
                 className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full animate-pulse-subtle"
-                style={{ background: "#A5FFD6" }}
+                style={{ background: "var(--color-z3-accent)" }}
               />
             </div>
 
@@ -74,7 +74,7 @@ export default function Navbar() {
       {mobileOpen && (
         <div
           className="md:hidden border-t px-4 py-3 space-y-1"
-          style={{ borderColor: "var(--color-z3-border)", background: "rgba(18,19,15,0.96)" }}
+          style={{ borderColor: "var(--color-z3-border)", background: "var(--color-z3-bg)" }}
         >
           <MobileNavLink href="/search?mode=buy">Buy</MobileNavLink>
           <MobileNavLink href="/search?mode=rent">Rent</MobileNavLink>

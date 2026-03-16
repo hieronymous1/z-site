@@ -8,7 +8,7 @@ const NAV = {
 
 export default function Footer() {
   return (
-    <footer className="section-rule py-16 px-6 sm:px-10 lg:px-16">
+    <footer className="section-rule" style={{ padding: 'clamp(48px, 6vw, 80px) var(--page-gutter)' }}>
       <div className="max-w-7xl mx-auto">
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">

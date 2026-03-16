@@ -11,7 +11,10 @@ const FEATURES = [
 
 export default function FeaturesSection() {
   return (
-    <section className="py-32 px-6 sm:px-10 lg:px-16 section-rule">
+    <section
+      className="section-rule"
+      style={{ padding: 'var(--spacing-section) var(--page-gutter)' }}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:gap-20">
 
@@ -21,7 +24,7 @@ export default function FeaturesSection() {
 
             <h2 className="type-display-lg mb-6">
               <span className="block">Real estate,</span>
-              <span className="block italic type-gradient">reimagined.</span>
+              <span className="block italic">reimagined.</span>
             </h2>
 
             <p className="type-body">
@@ -50,10 +53,7 @@ export default function FeaturesSection() {
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
-                  <h3
-                    className="type-display-md mb-1.5 transition-colors group-hover:text-z3-accent"
-                    style={{ fontSize: 20 }}
-                  >
+                  <h3 className="type-display-sm mb-1.5 transition-colors group-hover:text-z3-accent">
                     {title}
                   </h3>
                   <p className="type-body">{description}</p>

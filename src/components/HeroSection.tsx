@@ -20,13 +20,6 @@ const PROPERTY_TYPES = [
   { short: "LAND",  slug: "land" },
 ];
 
-const STATS = [
-  { label: "Avg. Price/sqft", value: "AED 1,280", change: "+8.5%" },
-  { label: "Active Listings",  value: "24,500+",   change: null },
-  { label: "Rental Yield",     value: "9.1%",       change: "+0.8pp" },
-  { label: "Q1 Transactions",  value: "AED 142B",   change: "+21%" },
-];
-
 /* ─── Dubai skyline — golden hour treatment ─── */
 function DubaiSkyline() {
   return (
@@ -182,7 +175,7 @@ export default function HeroSection() {
         </div>
 
         {/* ── Tab selector ── */}
-        <div className="mode-toggle mb-5">
+        <div className="mode-toggle" style={{ marginBottom: 'var(--spacing-md)' }}>
           {TABS.map((tab) => (
             <button
               key={tab}
@@ -195,7 +188,7 @@ export default function HeroSection() {
         </div>
 
         {/* ── Search bar ── */}
-        <div className="relative group w-full max-w-2xl mb-4">
+        <div className="relative group w-full max-w-2xl" style={{ marginBottom: 'var(--spacing-sm)' }}>
           <div
             className="absolute -inset-px rounded-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"
             style={{ background: 'linear-gradient(135deg, rgba(201,162,88,0.40), rgba(196,118,80,0.25))', filter: 'blur(1px)' }}
@@ -223,7 +216,7 @@ export default function HeroSection() {
         </div>
 
         {/* ── Filter chips ── */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-5 w-full max-w-2xl">
+        <div className="flex flex-wrap items-center justify-center gap-2 w-full max-w-2xl" style={{ marginBottom: 'var(--spacing-md)' }}>
           {filters.map((filter) => (
             <Link
               key={filter}
@@ -236,37 +229,18 @@ export default function HeroSection() {
         </div>
 
         {/* ── Property type row ── */}
-        <div className="flex items-center gap-0 flex-wrap justify-center mb-12">
+        <div className="flex items-center gap-0 flex-wrap justify-center mb-6">
           {PROPERTY_TYPES.map(({ short, slug }, i) => (
             <span key={short} className="flex items-center">
               <Link
                 href={`/search?mode=${activeTab.toLowerCase()}&type=${slug}`}
                 className="cargo-label transition-colors px-1"
-                style={{ color: 'rgba(201,162,88,0.65)' }}
-                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(201,162,88,0.95)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'rgba(201,162,88,0.65)')}
               >
                 {short}
               </Link>
               {i < PROPERTY_TYPES.length - 1 && <span className="cargo-number px-1">·</span>}
             </span>
           ))}
-        </div>
-
-        {/* ── Market stats row ── */}
-        <div className="hero__stats glass-medium rounded-2xl px-6 py-5">
-          <p className="type-label-mono text-center mb-4">Dubai Market Index</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-0 sm:divide-x" style={{ borderColor: 'rgba(30,22,10,0.08)' }}>
-            {STATS.map(({ label, value, change }) => (
-              <div key={label} className="flex flex-col items-center gap-1 sm:px-4">
-                <span className="type-body-sm text-center">{label}</span>
-                <span className="text-base font-semibold" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-z3-text)' }}>{value}</span>
-                {change && (
-                  <span className="feature-pill text-[10px]">{change}</span>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 

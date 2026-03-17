@@ -30,7 +30,7 @@ export default function Footer() {
             {/* Social icons */}
             <div className="flex items-center gap-2">
               {["X", "IG", "LI"].map((s) => (
-                <a key={s} href="#" className="btn-icon text-[10px] font-bold" aria-label={s}>
+                <a key={s} href="#" className="footer-icon" aria-label={s}>
                   {s}
                 </a>
               ))}

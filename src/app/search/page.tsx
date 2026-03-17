@@ -26,6 +26,12 @@ function SearchContent() {
   const properties = mode === "buy" ? BUY_PROPERTIES : RENT_PROPERTIES;
 
   const handleMarkerClick = (id: string) => {
+    // First click → show map popup (handled inside MapPanel)
+    // This callback is a no-op for the popup-only step
+    void id;
+  };
+
+  const handleViewDetails = (id: string) => {
     const property = properties.find((p) => p.id === id) ?? null;
     setSelectedProperty(property);
     setPropertyOpen(true);
@@ -77,6 +83,7 @@ function SearchContent() {
         <main className="flex-1 min-w-0">
           <MapPanel
             onMarkerClick={handleMarkerClick}
+            onViewDetails={handleViewDetails}
             properties={properties}
             mode={mode}
           />

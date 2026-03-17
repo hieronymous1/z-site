@@ -38,6 +38,14 @@ yarn-error.log*
 .env.production.local
 # .env.example IS committed (template for others)
 
+# claude code
+.claude/
+.playwright-mcp/
+
+# design reference assets (not production code)
+/ASSETS/
+cargo-reference*.png
+
 # vercel
 .vercel
 

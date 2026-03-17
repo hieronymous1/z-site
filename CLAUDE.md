@@ -99,7 +99,7 @@ All tokens live in the `@theme inline` block at the top of `globals.css` and are
 - **Colors:** `var(--color-z3-*)` — backgrounds, text, accent (gold), terracotta, status
 - **Spacing:** `var(--spacing-*)` — xs (8px) → 3xl (96px), plus `--spacing-section` and `--page-gutter`
 - **Radii:** `var(--radius-*)` — xs (6px) → lg (16px)
-- **Fonts:** `var(--font-display)` (Cormorant Garamond), `var(--font-sans)` (DM Sans), `var(--font-mono)` (JetBrains Mono)
+- **Fonts:** `var(--font-display)` (Urbanist), `var(--font-sans)` (Lora), `var(--font-mono)` (JetBrains Mono)
 
 See `DESIGN_SYSTEM.md` for the full token reference.
 
@@ -110,7 +110,8 @@ See `DESIGN_SYSTEM.md` for the full token reference.
 - Default theme: **light** ("Desert Gold")
 - Dark mode: toggled via `ThemeContext` — sets `data-theme="dark"` on `<html>`
 - Dark overrides: all `[data-theme="dark"]` rules are at the bottom of `globals.css`
-- Dark mode swaps gold `#C9A258` → mint `#A5FFD6`, terracotta `#C47650` → mauve `#A96DA3`
+- Dark mode swaps gold `#C9A258` → mint `#A5FFD6`, terracotta `#C47650` → mauve `#A96DA3`, bg cream → navy `#0B0F1A`
+- City renders swap: `dubai-day.png` (light) ↔ `dubai-night.png` (dark) via `useTheme()` in components
 - Theme persists to `localStorage` key `z3-theme`
 
 ---
@@ -150,6 +151,17 @@ All property data is mock — `src/data/properties.ts` exports `BUY_PROPERTIES` 
 
 ---
 
+## Cargo Editorial Aesthetic
+
+The design-v2 visual language is inspired by Cargo's "Writer's Retreat" template — a flat, newspaper-editorial aesthetic:
+- **Rules as structure**: Use `<hr className="hero-cargo__rule">` or `.editorial-rule` dividers between sections — not decorative cards or containers
+- **No ambient glow orbs**: Do not add radial-gradient background effects to page layouts
+- **No glass on hero/main sections**: Glass morphism is reserved for interactive overlays only (map popups, property panels, modals)
+- **Full-width imagery**: City renders and hero images should be edge-to-edge, not boxed or constrained
+- **Left-aligned heavy headlines**: Hero headlines use `.hero-cargo__headline` (Urbanist 900, left-aligned) — not centered badge+logo layouts
+
+---
+
 ## Rules
 
 - Never commit `.env.local`
@@ -158,3 +170,4 @@ All property data is mock — `src/data/properties.ts` exports `BUY_PROPERTIES` 
 - Always use `var(--color-z3-*)` tokens for colors, not hardcoded hex values in new code
 - If adding a new component style, add the class to `globals.css` in the appropriate section
 - Dark mode overrides go at the bottom of `globals.css` under `[data-theme="dark"]`
+- Hero and landing sections must follow the Cargo editorial aesthetic (flat, no glow, full-width image)
